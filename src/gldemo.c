@@ -104,7 +104,7 @@ void gldemo(gldemo_options *opts) {
         lastTime = currTime;
 
         glfwSwapBuffers(window);
-        glfwPollEvents();   
+        glfwPollEvents();
     }
 
     INFO("Terminating");
