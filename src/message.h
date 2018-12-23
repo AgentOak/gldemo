@@ -12,7 +12,7 @@ extern bool debug;
 
 #define INFO(...) \
     printf(__VA_ARGS__);\
-    printf("\n")
+    printf("\n");
 
 #define DEBUG(...) \
     if (debug) {\
@@ -24,15 +24,15 @@ extern bool debug;
 #define WARN(...) \
     fprintf(stderr, "[WARN] ");\
     fprintf(stderr, __VA_ARGS__);\
-    fprintf(stderr, "\n")
+    fprintf(stderr, "\n");
 
 #define ERROR(...) \
     fprintf(stderr, "[ERROR] ");\
     fprintf(stderr, __VA_ARGS__);\
-    fprintf(stderr, "\n");\
+    fprintf(stderr, "\n");
 
 #define FAIL(...) \
     ERROR(__VA_ARGS__);\
-    exit(EXIT_FAILURE)
+    exit(EXIT_FAILURE);
 
 #endif /* MESSAGE_H */
