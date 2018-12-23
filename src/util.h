@@ -9,7 +9,7 @@
  *
  * @return @c NULL if the file could not be read for any reason
  */
-extern char* readFile(char* fileName);
+extern char *readFile(char *fileName);
 
 // TODO: Texture loading
 

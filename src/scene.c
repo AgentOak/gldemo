@@ -8,13 +8,13 @@
 
 #include <math.h>
 
-void setup(int argc, char* argv[]) {
-    char* vsh = readFile("shader/phong.vert");
+void setup(int argc, char *argv[]) {
+    char *vsh = readFile("shader/phong.vert");
     if (vsh) {
         DEBUG(vsh);
     }
     
-    char* fsh = readFile("shader/phong.frag");
+    char *fsh = readFile("shader/phong.frag");
     if (fsh) {
         DEBUG(fsh);
     }

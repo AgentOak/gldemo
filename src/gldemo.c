@@ -16,17 +16,17 @@
 static const int RES_DEFAULT_WIDTH = 1280;
 static const int RES_DEFAULT_HEIGHT = 720;
 
-static void onGLFWError(int error, const char* message) {
+static void onGLFWError(int error, const char *message) {
     WARN("[GLFW #%i] %s", error, message);
 }
 
-static void onGLFWFramebufferSize(GLFWwindow* window, int width, int height) {
+static void onGLFWFramebufferSize(GLFWwindow *window, int width, int height) {
     glViewport(0, 0, width, height);
 
     onViewport(width, height);
 }
 
-static void onGLFWKey(GLFWwindow* window, int key, int scancode, int action, int mods) {
+static void onGLFWKey(GLFWwindow *window, int key, int scancode, int action, int mods) {
     if (action == GLFW_PRESS && (key == GLFW_KEY_ESCAPE || key == GLFW_KEY_Q)) {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
         return;
@@ -35,7 +35,7 @@ static void onGLFWKey(GLFWwindow* window, int key, int scancode, int action, int
     onKey(key, action, mods);
 }
 
-void gldemo(gldemo_options* opts) {
+void gldemo(gldemo_options *opts) {
     /* GLFW - OpenGL Toolkit */
     DEBUG("Creating context...");
     INFO("GLFW version: %s", glfwGetVersionString());
@@ -55,7 +55,7 @@ void gldemo(gldemo_options* opts) {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // Initially hidden before scene is loaded
 
-    GLFWwindow* window = glfwCreateWindow(RES_DEFAULT_WIDTH, RES_DEFAULT_HEIGHT, GLDEMO_NAME, NULL, NULL);
+    GLFWwindow *window = glfwCreateWindow(RES_DEFAULT_WIDTH, RES_DEFAULT_HEIGHT, GLDEMO_NAME, NULL, NULL);
     if (!window)  {
         FAIL("Window creation failure");
     }

@@ -7,7 +7,7 @@
 
 bool debug = false;
 
-static void printHelp(char* argv0) {
+static void printHelp(char *argv0) {
     printf(GLDEMO_NAME "\n\
 \n\
 Usage: %s [-s <0-2>] [-v] [-h] [<scene argument>*]\n\
@@ -23,7 +23,7 @@ Parameters:\n\
 ", argv0);
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
     // Construct options with defaults
     gldemo_options opts = {
         .swapInterval = 1
