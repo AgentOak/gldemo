@@ -8,7 +8,7 @@
 #define GLDEMO_VERSION "0.1"
 #define GLDEMO_NAME "GLDemo v" GLDEMO_VERSION
 
-extern bool debug;
+bool debug;
 
 #define INFO(...) \
     printf(__VA_ARGS__);\

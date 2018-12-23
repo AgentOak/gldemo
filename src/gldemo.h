@@ -8,6 +8,6 @@ typedef struct {
     char **sceneArgv;
 } gldemo_options;
 
-extern void gldemo(gldemo_options *opts);
+void gldemo(gldemo_options *opts);
 
 #endif /* GLDEMO_H */
