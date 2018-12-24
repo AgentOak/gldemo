@@ -13,8 +13,8 @@
 #define DEBUG_GL_STRING(name) \
     DEBUG(#name ": %s", glGetString(name))
 
-static const int RES_DEFAULT_WIDTH = 1280;
-static const int RES_DEFAULT_HEIGHT = 720;
+#define RES_DEFAULT_WIDTH 1280
+#define RES_DEFAULT_HEIGHT 720
 
 static void onGLFWError(int error, const char *message) {
     WARN("[GLFW #%i] %s", error, message);
