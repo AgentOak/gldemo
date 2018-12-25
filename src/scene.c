@@ -10,12 +10,12 @@
 
 void setup(int argc, char *argv[]) {
     string vsh = readFile("shader/phong.vert");
-    if (vsh.len) {
+    if (vsh.str) {
         DEBUG(vsh.str);
     }
     
     string fsh = readFile("shader/phong.frag");
-    if (fsh.len) {
+    if (fsh.str) {
         DEBUG(fsh.str);
     }
 }

@@ -15,21 +15,23 @@ string str(char *str) {
 }
 
 string readFile(char *fileName) {
-    FILE *f = fopen(fileName, "rb");
-    if (!f) {
-        return NULLSTR;
-    }
-
     struct stat st;
-    stat(fileName, &st);
-
-    char *target = malloc(st.st_size + 1);
-    if (!fread(target, st.st_size, 1, f)) {
+    if (stat(fileName, &st)) {
         return NULLSTR;
     }
-    fclose(f);
+    int length = st.st_size;
 
-    target[st.st_size] = '\0';
+    char *target = malloc(length + 1);
 
-    return (string) { .len = st.st_size, .str = target };
+    if (length > 0) {
+        FILE *f = fopen(fileName, "rb");
+        if (!f || !fread(target, length, 1, f)) {
+            return NULLSTR;
+        }
+        fclose(f);
+    }
+
+    target[length] = '\0';
+
+    return (string) { .len = length, .str = target };
 }

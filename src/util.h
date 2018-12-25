@@ -27,9 +27,10 @@ string str(char *str);
  * @brief Fully read a file into memory.
  *
  * Opens the file specified by the given @p fileName read-only and fully reads it into memory.
- * Memory allocated for @c str must be freed manually.
+ * Memory allocated for @c str must be freed manually. Reading an empty file will result in a 
+ * string with @c (len == 0), but a valid non-null @c str pointer.
  *
- * @return if the file could not be read for any reason, an empty string is returned
+ * @return if the file could not be read for any reason, NULLSTR is returned
  */
 string readFile(char *fileName);
 
