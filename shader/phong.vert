@@ -1,4 +1,4 @@
-#version 330
+#version 330 core
 
 in vec4 gl_Vertex;
 in vec3 gl_Normal;
