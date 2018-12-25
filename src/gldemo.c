@@ -80,6 +80,8 @@ void gldemo(gldemo_options *opts) {
     DEBUG_GL_STRING(GL_SHADING_LANGUAGE_VERSION);
     DEBUG_GL_STRING(GL_EXTENSIONS);
 
+    // TODO: If debug add GLAD post callback to check for errors
+
     // Register callbacks
     glfwSetFramebufferSizeCallback(window, onGLFWFramebufferSize);
     glfwSetKeyCallback(window, onGLFWKey);
@@ -102,6 +104,8 @@ void gldemo(gldemo_options *opts) {
         tick(currTime - lastTime);
         render(currTime);
         lastTime = currTime;
+
+        // TODO: Check opengl errors once every frame
 
         glfwSwapBuffers(window);
         glfwPollEvents();

@@ -9,14 +9,14 @@
 #include <math.h>
 
 void setup(int argc, char *argv[]) {
-    char *vsh = readFile("shader/phong.vert");
-    if (vsh) {
-        DEBUG(vsh);
+    string vsh = readFile("shader/phong.vert");
+    if (vsh.len) {
+        DEBUG(vsh.str);
     }
     
-    char *fsh = readFile("shader/phong.frag");
-    if (fsh) {
-        DEBUG(fsh);
+    string fsh = readFile("shader/phong.frag");
+    if (fsh.len) {
+        DEBUG(fsh.str);
     }
 }
 
@@ -29,7 +29,7 @@ void tick(double delta) {
 }
 
 void render(double time) {
-    glClearColor(0.0f, 0.5f, (float) sin(time), 1.0f);
+    glClearColor(0.0f, 0.5f, (float) sin(time) * 0.5f + 0.5f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT); 
 }
 

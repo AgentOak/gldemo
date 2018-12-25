@@ -2,24 +2,28 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 
-char *readFile(char *fileName) {
+string str(char *str) {
+    return (string) { .len = strlen(str), .str = str };
+}
+
+string readFile(char *fileName) {
     FILE *f = fopen(fileName, "rb");
     if (!f) {
-        return NULL;
+        return (string) { .len = 0, .str = NULL };
     }
 
-    fseek(f, 0, SEEK_END);
-    long length = ftell(f);
-    fseek(f, 0, SEEK_SET);
-    
-    char *target = malloc(length + 1);
-    if (!fread(target, length, 1, f)) {
-        return NULL;
+    struct stat st;
+    stat(fileName, &st);
+
+    char *target = malloc(st.st_size + 1);
+    if (!fread(target, st.st_size, 1, f)) {
+        return (string) { .len = 0, .str = NULL };
     }
     fclose(f);
 
-    target[length] = '\0';
+    target[st.st_size] = '\0';
 
-    return target;
+    return (string) { .len = st.st_size, .str = target };
 }
