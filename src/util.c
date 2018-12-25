@@ -2,16 +2,22 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/stat.h>
 
 string str(char *str) {
-    return (string) { .len = strlen(str), .str = str };
+    size_t length = 0;
+    if (str) {
+        length = strlen(str);
+    }
+
+    return (string) { .len = length, .str = str };
 }
 
 string readFile(char *fileName) {
     FILE *f = fopen(fileName, "rb");
     if (!f) {
-        return (string) { .len = 0, .str = NULL };
+        return NULLSTR;
     }
 
     struct stat st;
@@ -19,7 +25,7 @@ string readFile(char *fileName) {
 
     char *target = malloc(st.st_size + 1);
     if (!fread(target, st.st_size, 1, f)) {
-        return (string) { .len = 0, .str = NULL };
+        return NULLSTR;
     }
     fclose(f);
 
