@@ -1,7 +1,9 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-void setup(int argc, char *argv[]);
+#include "util.h"
+
+void setup(int argc, string argv[]);
 void onViewport(int width, int height);
 void tick(double delta);
 void render(double time);

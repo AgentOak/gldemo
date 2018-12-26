@@ -57,13 +57,21 @@ int main(int argc, char *argv[]) {
 
     // Pass other arguments to the scene
     opts.sceneArgc = argc - optind;
-    opts.sceneArgv = &argv[optind];
+    opts.sceneArgv = malloc(sizeof(string) * opts.sceneArgc);
+    if (!opts.sceneArgv) {
+        FAIL("Could not allocate memory for arguments");
+    }
 
     for (int i = 0; i < opts.sceneArgc; i++) {
-        DEBUG("Scene argument %i: %s", i, opts.sceneArgv[i]);
+        string s = str(argv[optind]);
+        // We need this workaround because const members in structs can't be initialized
+        memcpy(&opts.sceneArgv[i], &s, sizeof(string));
+
+        DEBUG("Scene argument %d: %s", i, opts.sceneArgv[i].str);
     }
 
     gldemo(&opts);
 
+    free(opts.sceneArgv);
     return EXIT_SUCCESS;
 }

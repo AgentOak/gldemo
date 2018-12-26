@@ -3,35 +3,56 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
+#include <sys/types.h>
 #include <sys/stat.h>
 
-string str(char *str) {
-    size_t length = 0;
-    if (str) {
-        length = strlen(str);
-    }
+string strprintf(const char *format, ...) {
+    va_list args, argsCopy;
+    va_start(args, format);
+    va_copy(argsCopy, args);
 
-    return (string) { .len = length, .str = str };
-}
-
-string readFile(char *fileName) {
-    struct stat st;
-    if (stat(fileName, &st)) {
+    int length = vsnprintf(NULL, 0, format, args);
+    if (length < 0) {
         return NULLSTR;
     }
-    int length = st.st_size;
 
-    char *target = malloc(length + 1);
+    char *buffer = malloc(length + 1);
+    if (!buffer) {
+        return NULLSTR;
+    }
+    va_end(args);
+
+    if (vsprintf(buffer, format, argsCopy) < 0) {
+        return NULLSTR;
+    }
+    va_end(argsCopy);
+
+    return (string) { .len = length, .str = buffer };
+}
+
+string readFile(string fileName) {
+    struct stat st;
+    if (stat(fileName.str, &st)) {
+        return NULLSTR;
+    }
+    off_t length = st.st_size;
+
+    char *buffer = malloc(length + 1);
+    if (!buffer) {
+        return NULLSTR;
+    }
 
     if (length > 0) {
-        FILE *f = fopen(fileName, "rb");
-        if (!f || !fread(target, length, 1, f)) {
+        FILE *f = fopen(fileName.str , "rb");
+        if (!f || !fread(buffer, length, 1, f)) {
+            free(buffer);
             return NULLSTR;
         }
         fclose(f);
     }
 
-    target[length] = '\0';
+    buffer[length] = '\0';
 
-    return (string) { .len = length, .str = target };
+    return (string) { .len = length, .str = buffer };
 }

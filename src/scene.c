@@ -8,15 +8,15 @@
 
 #include <math.h>
 
-void setup(int argc, char *argv[]) {
-    string vsh = readFile("shader/phong.vert");
-    if (vsh.str) {
-        DEBUG(vsh.str);
-    }
-    
-    string fsh = readFile("shader/phong.frag");
-    if (fsh.str) {
-        DEBUG(fsh.str);
+void setup(int argc, string argv[]) {
+    for (int i = 0; i < argc; i++) {
+        string fileName = strprintf("shader/%s", argv[i].str);
+        string sh = readFile(fileName);
+        if (sh.str) {
+            DEBUG(sh.str);
+        }
+        FREESTR(sh);
+        FREESTR(fileName);
     }
 }
 

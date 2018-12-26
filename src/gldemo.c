@@ -17,7 +17,7 @@
 #define RES_DEFAULT_HEIGHT 720
 
 static void onGLFWError(int error, const char *message) {
-    WARN("[GLFW #%i] %s", error, message);
+    WARN("[GLFW #%d] %s", error, message);
 }
 
 static void onGLFWFramebufferSize(GLFWwindow *window, int width, int height) {
@@ -39,7 +39,7 @@ void gldemo(gldemo_options *opts) {
     /* GLFW - OpenGL Toolkit */
     DEBUG("Creating context...");
     INFO("GLFW version: %s", glfwGetVersionString());
-    DEBUG("Compiled against GLFW version %i.%i.%i", GLFW_VERSION_MAJOR, GLFW_VERSION_MINOR, GLFW_VERSION_REVISION);
+    DEBUG("Compiled against GLFW version %d.%d.%d", GLFW_VERSION_MAJOR, GLFW_VERSION_MINOR, GLFW_VERSION_REVISION);
 
     glfwSetErrorCallback(onGLFWError);
 
@@ -69,7 +69,7 @@ void gldemo(gldemo_options *opts) {
     }
 
     INFO("OpenGL version: %s", glGetString(GL_VERSION));
-    DEBUG("GLAD: OpenGL version %i.%i", GLVersion.major, GLVersion.minor);
+    DEBUG("GLAD: OpenGL version %d.%d", GLVersion.major, GLVersion.minor);
     if (!GLAD_GL_VERSION_3_3) {
         WARN("The loaded OpenGL driver does not support OpenGL 3.3");
     }

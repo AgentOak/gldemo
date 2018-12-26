@@ -1,11 +1,13 @@
 #ifndef GLDEMO_H
 #define GLDEMO_H
 
+#include "util.h"
+
 typedef struct {
     int swapInterval;
 
     int sceneArgc;
-    char **sceneArgv;
+    string *sceneArgv;
 } gldemo_options;
 
 void gldemo(gldemo_options *opts);
