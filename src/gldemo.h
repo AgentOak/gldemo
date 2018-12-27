@@ -6,6 +6,7 @@
 typedef struct {
     uint8_t swapInterval;
     uint16_t frameLimit;
+    // TODO: Add fullscreen/monitor mode options
 
     uint32_t sceneArgc;
     string *sceneArgv;

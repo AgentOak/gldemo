@@ -11,7 +11,7 @@ void setup(uint32_t argc, string argv[]) {
         string fileName = strprintf("shader/%s", argv[i].str);
         string sh = readFile(fileName);
         if (sh.str) {
-            DEBUG(sh.str);
+            DEBUG("%s", sh.str);
         }
         FREESTR(sh);
         FREESTR(fileName);

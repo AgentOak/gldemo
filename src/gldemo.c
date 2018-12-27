@@ -97,6 +97,7 @@ void gldemo(gldemo_options *opts) {
     while (!glfwWindowShouldClose(window)) {
         double currTime = glfwGetTime();
         // TODO: Properly decouple ticks from render calls
+        // TODO: Frame limiter
         tick(currTime - lastTime);
         render(currTime);
         lastTime = currTime;

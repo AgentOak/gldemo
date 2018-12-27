@@ -1,6 +1,8 @@
 CC=gcc
+#CC=clang
 
-CFLAGS=-O2 -g -Wall -Wextra -Werror -Wno-error=unused-parameter -Wno-error=unused-function -std=c99 -pedantic
+UFLAGS=
+CFLAGS=-O2 -g -Wall -Wextra -Werror -Wno-error=unused-parameter -Wno-error=unused-function -std=c99 -pedantic $(UFLAGS)
 LIB=-lglfw -ldl -lm
 INC=-Iinclude
 
