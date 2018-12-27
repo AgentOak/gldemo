@@ -1,6 +1,6 @@
 CC=gcc
 
-CFLAGS=-O2 -g -Wall -Wextra -Werror -Wno-unused-parameter -Wno-error=unused-function -std=c99 -pedantic
+CFLAGS=-O2 -g -Wall -Wextra -Werror -Wno-error=unused-parameter -Wno-error=unused-function -std=c99 -pedantic
 LIB=-lglfw -ldl -lm
 INC=-Iinclude
 
@@ -9,7 +9,7 @@ SHADERDIR=shader
 BUILDDIR=build
 
 EXE=gldemo
-DEPS=src/message.h src/gldemo.h src/scene.h src/util.h include/glad/glad.h include/linmath.h
+DEPS=src/master.h src/gldemo.h src/scene.h src/util.h include/glad/glad.h include/linmath.h
 OBJ=main.o gldemo.o scene.o util.o glad.o
 SHADER=
 

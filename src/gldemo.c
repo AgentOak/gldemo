@@ -1,14 +1,10 @@
 #include "gldemo.h"
 
-#include "message.h"
 #include "scene.h"
 
 #define GLFW_INCLUDE_NONE
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
-#include <stdlib.h>
-#include <stdbool.h>
 
 #define DEBUG_GL_STRING(name) \
     DEBUG(#name ": %s", glGetString(name))
@@ -20,13 +16,13 @@ static void onGLFWError(int error, const char *message) {
     WARN("[GLFW #%d] %s", error, message);
 }
 
-static void onGLFWFramebufferSize(GLFWwindow *window, int width, int height) {
+static void onGLFWFramebufferSize(GLFWwindow *window UNUSED, int width, int height) {
     glViewport(0, 0, width, height);
 
     onViewport(width, height);
 }
 
-static void onGLFWKey(GLFWwindow *window, int key, int scancode, int action, int mods) {
+static void onGLFWKey(GLFWwindow *window, int key, int scancode UNUSED, int action, int mods) {
     if (action == GLFW_PRESS && (key == GLFW_KEY_ESCAPE || key == GLFW_KEY_Q)) {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
         return;

@@ -1,8 +1,5 @@
 #include "util.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <stdarg.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -13,6 +10,7 @@ string strprintf(const char *format, ...) {
     va_copy(argsCopy, args);
 
     int length = vsnprintf(NULL, 0, format, args);
+    va_end(args);
     if (length < 0) {
         return NULLSTR;
     }
@@ -21,7 +19,6 @@ string strprintf(const char *format, ...) {
     if (!buffer) {
         return NULLSTR;
     }
-    va_end(args);
 
     if (vsprintf(buffer, format, argsCopy) < 0) {
         return NULLSTR;

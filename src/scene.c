@@ -1,15 +1,13 @@
 #include "scene.h"
 
-#include "message.h"
 #include "util.h"
 
 #include <glad/glad.h>
 #include <linmath.h>
-
 #include <math.h>
 
-void setup(int argc, string argv[]) {
-    for (int i = 0; i < argc; i++) {
+void setup(uint32_t argc, string argv[]) {
+    for (uint32_t i = 0; i < argc; i++) {
         string fileName = strprintf("shader/%s", argv[i].str);
         string sh = readFile(fileName);
         if (sh.str) {
@@ -20,11 +18,11 @@ void setup(int argc, string argv[]) {
     }
 }
 
-void onViewport(int width, int height) {
+void onViewport(int width UNUSED, int height UNUSED) {
     
 }
 
-void tick(double delta) {
+void tick(double delta UNUSED) {
 
 }
 
@@ -33,6 +31,6 @@ void render(double time) {
     glClear(GL_COLOR_BUFFER_BIT); 
 }
 
-void onKey(int key, int action, int mods) {
+void onKey(int key UNUSED, int action UNUSED, int mods UNUSED) {
 
 }
