@@ -10,8 +10,8 @@ typedef struct {
 
     uint32_t argc;
     char **argv;
-} gldemo_options;
+} app_options;
 
-void gldemo(gldemo_options *opts);
+void window(app_options *opts);
 
 #endif /* GLDEMO_H */

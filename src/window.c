@@ -1,4 +1,4 @@
-#include "gldemo.h"
+#include "window.h"
 
 #include "renderer.h"
 #include "input.h"
@@ -29,7 +29,7 @@ static void onGLFWFramebufferSize(GLFWwindow *window UNUSED, int width, int heig
     onViewport(width, height);
 }
 
-void gldemo(gldemo_options *opts) {
+void window(app_options *opts) {
     /* GLFW - OpenGL Toolkit */
     DEBUG("Creating context...");
     INFO("GLFW version: %s", glfwGetVersionString());

@@ -1,5 +1,5 @@
 #include "master.h"
-#include "gldemo.h"
+#include "window.h"
 
 #include <getopt.h>
 
@@ -26,7 +26,7 @@ Parameters:\n\
 
 int main(int argc, char *argv[]) {
     // Construct options with defaults
-    gldemo_options *opts = malloc(sizeof(gldemo_options));
+    app_options *opts = malloc(sizeof(*opts));
     if (!opts) {
         FAIL("Could not allocate memory for options");
     }
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
         DEBUG("Scene argument %d: %s", i, opts->argv[i]);
     }
 
-    gldemo(opts);
+    window(opts);
 
     free(opts);
     return EXIT_SUCCESS;
