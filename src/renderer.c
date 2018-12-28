@@ -17,6 +17,10 @@ static const vertex vertices[3] = {
     {   0.f,  0.6f, -1.0f, 0.0f, 0.0f, 1.0f }
 };
 
+GLuint program;
+GLint locationModelViewProjection, locationTime;
+mat4x4 modelViewProjection;
+
 static GLuint makeShader(GLenum shaderType, string fileName) {
     string shaderSource = readFile(fileName);
     if (!shaderSource.str) {
@@ -33,6 +37,10 @@ static GLuint makeShader(GLenum shaderType, string fileName) {
 }
 
 void setupRenderer(uint32_t argc, char *argv[]) {
+    GLuint vertexArrayID;
+    glGenVertexArrays(1, &vertexArrayID);
+    glBindVertexArray(vertexArrayID);
+
     GLuint vertexBuffer;
     glGenBuffers(1, &vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
@@ -45,17 +53,35 @@ void setupRenderer(uint32_t argc, char *argv[]) {
     string vertexFileName = strprintf("shader/%s.vert", argv[0]);
     string fragmentFileName = strprintf("shader/%s.frag", argv[0]);
 
-    GLuint program = glCreateProgram();
+    program = glCreateProgram();
     glAttachShader(program, makeShader(GL_VERTEX_SHADER, vertexFileName));
     glAttachShader(program, makeShader(GL_FRAGMENT_SHADER, fragmentFileName));
     glLinkProgram(program);
 
-    FREESTR(vertexFileName);
     FREESTR(fragmentFileName);
+    FREESTR(vertexFileName);
+
+    locationModelViewProjection = glGetUniformLocation(program, "modelViewProjection");
+    locationTime = glGetUniformLocation(program, "time");
+
+    GLint locationVPosition = glGetAttribLocation(program, "vPosition");
+    GLint locationVColor = glGetAttribLocation(program, "vColor");
+
+    glEnableVertexAttribArray(locationVPosition);
+    glVertexAttribPointer(locationVPosition, 3, GL_FLOAT, GL_FALSE,
+                          sizeof(float) * 6, (void*) 0);
+    glEnableVertexAttribArray(locationVColor);
+    glVertexAttribPointer(locationVColor, 3, GL_FLOAT, GL_FALSE,
+                          sizeof(float) * 6, (void*) (sizeof(float) * 3));
+
+    glUseProgram(program);
 }
 
-void onViewport(int width UNUSED, int height UNUSED) {
-    
+void onViewport(int width, int height) {
+    float ratio = width / (float) height;
+
+    mat4x4_perspective(modelViewProjection, 60.0 / 180.0 * PI, ratio, 0.0f, -100.0f);
+    glUniformMatrix4fv(locationModelViewProjection, 1, GL_FALSE, (const float *) modelViewProjection);
 }
 
 void tick(double delta UNUSED) {
@@ -63,6 +89,9 @@ void tick(double delta UNUSED) {
 }
 
 void render(double time) {
-    glClearColor(0.0f, 0.5f, (float) sin(time) * 0.5f + 0.5f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT); 
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    glUniform1f(locationTime, (float) time);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
 }

@@ -17,6 +17,12 @@ static void onGLFWError(int error, const char *message) {
     WARN("[GLFW #%d] %s", error, message);
 }
 
+static void GLAPIENTRY onGLError(GLenum source UNUSED, GLenum type, GLuint id UNUSED,
+    GLenum severity, GLsizei length UNUSED, const GLchar* message, const void* userParam UNUSED) {
+    WARN("[GL] %s type=0x%x, severity=0x%x, message=%s",
+        (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""), type, severity, message);
+}
+
 static void onGLFWFramebufferSize(GLFWwindow *window UNUSED, int width, int height) {
     glViewport(0, 0, width, height);
 
@@ -68,15 +74,21 @@ void gldemo(gldemo_options *opts) {
     DEBUG_GL_STRING(GL_SHADING_LANGUAGE_VERSION);
     DEBUG_GL_STRING(GL_EXTENSIONS);
 
-    // TODO: If debug add GLAD post callback to check for errors
-
     // Register callbacks
     glfwSetFramebufferSizeCallback(window, onGLFWFramebufferSize);
     glfwSetKeyCallback(window, onKey);
 
+    // Error handling
+    // TODO: GLAD post callback to check for errors?
+    if (debug) {
+        glEnable(GL_DEBUG_OUTPUT);
+        glDebugMessageCallback(onGLError, 0);
+    }
+
     // Load scene
     INFO("Initializing renderer");
     setupRenderer(opts->argc, opts->argv);
+    onViewport(RES_DEFAULT_WIDTH, RES_DEFAULT_HEIGHT);
 
     // Display window late
     glfwSetTime(0.0);

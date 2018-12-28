@@ -13,7 +13,7 @@ BUILDDIR=build
 EXE=gldemo
 DEPS=src/master.h src/gldemo.h src/renderer.h src/input.h src/util.h include/glad/glad.h include/linmath.h
 OBJ=main.o gldemo.o renderer.o input.o util.o glad.o
-SHADER=
+SHADER=simple.vert simple.frag
 
 #---------------------------------------------------------------------------------
 # Do not edit below this line

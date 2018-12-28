@@ -73,4 +73,9 @@ extern bool debug;
     #define UNUSED
 #endif
 
+/*
+ * Constants
+ */
+#define PI 3.14159265358979323846
+
 #endif /* MASTER_H */

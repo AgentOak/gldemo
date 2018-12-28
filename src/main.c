@@ -8,7 +8,7 @@ bool debug = false;
 static void printHelp(char *argv0) {
     printf(GLDEMO_NAME "\n\
 \n\
-Usage: %s [-s <0-2>] [-l <n>] [-v] [-h] [<scene argument>*]\n\
+Usage: %s [-s <0-2>] [-l <n>] [-v] [-h] [<additional argument>*]\n\
 \n\
 Parameters:\n\
     -s n: Set swap interval to n frames\n\
