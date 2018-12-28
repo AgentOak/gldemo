@@ -26,10 +26,13 @@ Parameters:\n\
 
 int main(int argc, char *argv[]) {
     // Construct options with defaults
-    gldemo_options opts = {
-        .swapInterval = 1,
-        .frameLimit = 0
-    };
+    gldemo_options *opts = malloc(sizeof(gldemo_options));
+    if (!opts) {
+        FAIL("Could not allocate memory for options");
+    }
+
+    opts->swapInterval = 1;
+    opts->frameLimit = 0;
 
     int opt;
     while ((opt = getopt(argc, argv, "hHVvs:l:")) != -1) {
@@ -45,10 +48,10 @@ int main(int argc, char *argv[]) {
                 debug = true;
                 break;
             case 's':
-                opts.swapInterval = (uint8_t) strtoul(optarg, NULL, 10);
+                opts->swapInterval = (uint16_t) strtoul(optarg, NULL, 10);
                 break;
             case 'l':
-                opts.frameLimit = (uint16_t) strtoul(optarg, NULL, 10);
+                opts->frameLimit = (uint16_t) strtoul(optarg, NULL, 10);
                 break;
             case '?':
                 printHelp(argv[0]);
@@ -61,22 +64,15 @@ int main(int argc, char *argv[]) {
     INFO(GLDEMO_NAME);
 
     // Pass other arguments to the scene
-    opts.sceneArgc = (uint32_t) argc - optind;
-    opts.sceneArgv = malloc(sizeof(string) * opts.sceneArgc);
-    if (!opts.sceneArgv) {
-        FAIL("Could not allocate memory for arguments");
+    opts->argc = (uint32_t) argc - optind;
+    opts->argv = &argv[optind];
+
+    for (uint32_t i = 0; i < opts->argc; i++) {
+        DEBUG("Scene argument %d: %s", i, opts->argv[i]);
     }
 
-    for (uint32_t i = 0; i < opts.sceneArgc; i++) {
-        string s = str(argv[optind]);
-        // We need this workaround because const members in structs can't be initialized
-        memcpy(&opts.sceneArgv[i], &s, sizeof(string));
+    gldemo(opts);
 
-        DEBUG("Scene argument %d: %s", i, opts.sceneArgv[i].str);
-    }
-
-    gldemo(&opts);
-
-    free(opts.sceneArgv);
+    free(opts);
     return EXIT_SUCCESS;
 }

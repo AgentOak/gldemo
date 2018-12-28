@@ -2,7 +2,7 @@ CC=gcc
 #CC=clang
 
 UFLAGS=
-CFLAGS=-O2 -g -Wall -Wextra -Werror -Wno-error=unused-parameter -Wno-error=unused-function -std=c99 -pedantic $(UFLAGS)
+CFLAGS=-O2 -g -Wall -Wextra -Werror -Wformat=2 -Wno-error=unused-parameter -Wno-error=unused-function -std=c99 -pedantic $(UFLAGS)
 LIB=-lglfw -ldl -lm
 INC=-Iinclude
 
@@ -11,8 +11,8 @@ SHADERDIR=shader
 BUILDDIR=build
 
 EXE=gldemo
-DEPS=src/master.h src/gldemo.h src/scene.h src/util.h include/glad/glad.h include/linmath.h
-OBJ=main.o gldemo.o scene.o util.o glad.o
+DEPS=src/master.h src/gldemo.h src/renderer.h src/input.h src/util.h include/glad/glad.h include/linmath.h
+OBJ=main.o gldemo.o renderer.o input.o util.o glad.o
 SHADER=
 
 #---------------------------------------------------------------------------------

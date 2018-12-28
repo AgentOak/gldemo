@@ -1,6 +1,7 @@
 #include "gldemo.h"
 
-#include "scene.h"
+#include "renderer.h"
+#include "input.h"
 
 #define GLFW_INCLUDE_NONE
 #include <glad/glad.h>
@@ -83,8 +84,8 @@ void gldemo(gldemo_options *opts) {
     glfwSetKeyCallback(window, onGLFWKey);
 
     // Load scene
-    INFO("Loading scene");
-    setup(opts->sceneArgc, opts->sceneArgv);
+    INFO("Initializing renderer");
+    setupRenderer(opts->argc, opts->argv);
 
     // Display window late
     glfwSetTime(0.0);

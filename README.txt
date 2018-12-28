@@ -5,7 +5,7 @@ Build:
 make -j$(nproc)
 
 Build using clang:
-make -j$(nproc) CC=clang
+make -j$(nproc) rebuild CC=clang
 
 Build with custom flags:
-make -j$(nproc) UFLAGS=-flto
+make -j$(nproc) rebuild UFLAGS=-flto
