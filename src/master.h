@@ -21,7 +21,7 @@ extern bool debug;
 
 #define DEBUG(...) \
     if (debug) {\
-        printf("[DEBUG %s@%s:%d] ", __func__, __FILE__, __LINE__);\
+        printf("[DEBUG] ");\
         printf(__VA_ARGS__);\
         printf("\n");\
     }

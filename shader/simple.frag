@@ -1,9 +1,9 @@
 #version 330 core
 
-uniform float time;
-
 in vec4 color;
 
+layout(location = 0) out vec4 fragColor;
+
 void main() {
-    gl_FragColor = color;
+    fragColor = color;
 }

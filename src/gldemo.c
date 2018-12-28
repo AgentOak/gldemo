@@ -17,10 +17,10 @@ static void onGLFWError(int error, const char *message) {
     WARN("[GLFW #%d] %s", error, message);
 }
 
-static void GLAPIENTRY onGLError(GLenum source UNUSED, GLenum type, GLuint id UNUSED,
+static void GLAPIENTRY onGLError(GLenum source, GLenum type, GLuint id,
     GLenum severity, GLsizei length UNUSED, const GLchar* message, const void* userParam UNUSED) {
-    WARN("[GL] %s type=0x%x, severity=0x%x, message=%s",
-        (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""), type, severity, message);
+    WARN("[%s] source=0x%x, severity=0x%x, id=%d\n\t%s",
+        (type == GL_DEBUG_TYPE_ERROR ? "GL ERROR" : "GL DEBUG"), source, severity, id, message);
 }
 
 static void onGLFWFramebufferSize(GLFWwindow *window UNUSED, int width, int height) {
@@ -79,10 +79,16 @@ void gldemo(gldemo_options *opts) {
     glfwSetKeyCallback(window, onKey);
 
     // Error handling
-    // TODO: GLAD post callback to check for errors?
     if (debug) {
-        glEnable(GL_DEBUG_OUTPUT);
-        glDebugMessageCallback(onGLError, 0);
+        //if (GLAD_GL_VERSION_4_3) {
+            glEnable(GL_DEBUG_OUTPUT);
+            glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+
+            glDebugMessageCallback(onGLError, NULL); 
+            glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, true);
+        //} else {
+            // TODO: GLAD post callback to check for errors
+        //}
     }
 
     // Load scene
@@ -100,13 +106,12 @@ void gldemo(gldemo_options *opts) {
     double lastTime = 0.0;
     while (!glfwWindowShouldClose(window)) {
         double currTime = glfwGetTime();
-        // TODO: Properly decouple ticks from render calls
-        // TODO: Frame limiter
+        // TODO: Properly decouple ticks from render calls & arbitrary frame limit
         tick(currTime - lastTime);
         render(currTime);
         lastTime = currTime;
 
-        // TODO: Check opengl errors once every frame
+        // TODO: if (!debug) Check opengl errors once every frame
 
         glfwSwapBuffers(window);
         glfwPollEvents();
