@@ -3,6 +3,9 @@
 
 #include "master.h"
 
-void onKey(int key, int action, int mods);
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
+
+void onKey(GLFWwindow *window, int key, int scancode, int action, int mods);
 
 #endif /* INPUT_H */

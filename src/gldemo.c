@@ -23,15 +23,6 @@ static void onGLFWFramebufferSize(GLFWwindow *window UNUSED, int width, int heig
     onViewport(width, height);
 }
 
-static void onGLFWKey(GLFWwindow *window, int key, int scancode UNUSED, int action, int mods) {
-    if (action == GLFW_PRESS && (key == GLFW_KEY_ESCAPE || key == GLFW_KEY_Q)) {
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
-        return;
-    }
-
-    onKey(key, action, mods);
-}
-
 void gldemo(gldemo_options *opts) {
     /* GLFW - OpenGL Toolkit */
     DEBUG("Creating context...");
@@ -81,7 +72,7 @@ void gldemo(gldemo_options *opts) {
 
     // Register callbacks
     glfwSetFramebufferSizeCallback(window, onGLFWFramebufferSize);
-    glfwSetKeyCallback(window, onGLFWKey);
+    glfwSetKeyCallback(window, onKey);
 
     // Load scene
     INFO("Initializing renderer");
