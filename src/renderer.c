@@ -11,13 +11,6 @@ typedef struct vertex_data {
     float r, g, b;
 } vertex;
 
-static mat4x4 identity = {
-    { 1.0f, 0.0f, 0.0f, 0.0f },
-    { 0.0f, 1.0f, 0.0f, 0.0f },
-    { 0.0f, 0.0f, 1.0f, 0.0f },
-    { 0.0f, 0.0f, 0.0f, 1.0f }
-};
-
 #define FIELD_OF_VIEW 65.0
 
 #define LOCATION_VPOSITION 0
@@ -204,8 +197,8 @@ void setupRenderer(uint32_t argc, char *argv[]) {
     // Set up view matrix
     mat4x4 view;
     mat4x4_look_at(view,
-        (float[]) { 3.0, 3.0, 5.0 }, // eye
-        (float[]) { 0.0, 0.0, 0.0 }, // center
+        (float[]) { 8.0, 6.0, 0.0 }, // eye
+        (float[]) { 0.0, -1.0, 0.0 }, // center
         (float[]) { 0.0, 1.0, 0.0 }); // up
     glUniformMatrix4fv(locationView, 1, GL_FALSE, (const float *) view);
 }
@@ -224,19 +217,28 @@ void tick(double delta UNUSED) {
 
 }
 
+void drawCube(float x, float y, float z, float yDegrees) {
+    glBindBuffer(GL_ARRAY_BUFFER, bufferCube);
+
+    mat4x4 temp, model;
+    mat4x4_translate(temp, x, y, z);
+    mat4x4_rotate_Y(model, temp, yDegrees / 180.0 * PI);
+    glUniformMatrix4fv(locationModel, 1, GL_FALSE, (const float *) model);
+
+    glDrawArrays(GL_TRIANGLES, 0, VERTICES_CUBE);
+}
+
 void render(double time) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    mat4x4 model;
-    mat4x4_rotate_Y(model, identity, time * 90.0 / 180.0 * PI);
-    glUniformMatrix4fv(locationModel, 1, GL_FALSE, (const float *) model);
-
     glUniform1f(locationTime, (float) time);
 
+    // glValidateProgram(programA); ...
     glUseProgram(programA);
 
-    glBindBuffer(GL_ARRAY_BUFFER, bufferCube);
-    glDrawArrays(GL_TRIANGLES, 0, VERTICES_CUBE);
+    for (int i = 0; i < 8; i++) {
+        drawCube(sin(i / 8.0 * 2.0 * PI) * 4.0, 0.0, cos(i / 8.0 * 2.0 * PI) * 4.0, time * (i + 1) * 15.0);
+    }
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
