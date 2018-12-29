@@ -130,7 +130,7 @@ void onViewport(int width, int height) {
 
     // Set up projection matrix
     mat4x4 projection;
-    mat4x4_perspective(projection, FIELD_OF_VIEW / 180.0 * PI, ratio, 1.0f, 100.0f);
+    mat4x4_perspective(projection, FIELD_OF_VIEW / 180.0 * PI, ratio, 0.1f, 100.0f);
     glUniformMatrix4fv(locationProjection, 1, GL_FALSE, (const float *) projection);
 }
 
@@ -147,7 +147,10 @@ void render(double time) {
 
     for (int i = 0; i < 8; i++) {
         mat4x4 temp, model;
-        mat4x4_translate(temp, sin(i / 8.0 * 2.0 * PI) * 4.0, 0.0, cos(i / 8.0 * 2.0 * PI) * 4.0);
+        mat4x4_translate(temp,
+             sin(i / 8.0 * 2.0 * PI) * 4.0,
+            -cos(i / 8.0 * 2.0 * PI) * 2.0,
+             cos(i / 8.0 * 2.0 * PI) * 6.0);
         mat4x4_rotate_Y(model, temp, (time * (i + 1) * 15.0) / 180.0 * PI);
         glUniformMatrix4fv(locationModel, 1, GL_FALSE, (const float *) model);
 

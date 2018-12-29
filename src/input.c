@@ -3,8 +3,8 @@
 mat4x4 view;
 
 static bool mouseActive = false;
-static double mouseX = 1600.0, mouseY = 280.0;
-static vec3 position = { 0.0, 4.0, 8.0 };
+static double mouseX = 1570.0, mouseY = 230.0;
+static vec3 position = { 0.0, 2.5, 9.5 };
 
 static GLFWwindow *window;
 
