@@ -73,6 +73,12 @@ extern bool debug;
     #define UNUSED
 #endif
 
+#if __has_attribute(packed)
+    #define PACKED __attribute__((packed))
+#else
+    #define PACKED
+#endif
+
 /*
  * Constants
  */

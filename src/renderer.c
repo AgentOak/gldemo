@@ -2,80 +2,16 @@
 
 #include "util.h"
 #include "input.h"
+#include "model.h"
 
 #include <glad/glad.h>
 #include <linmath.h>
 #include <math.h>
 
-typedef struct vertex_data {
-    float x, y, z;
-    float r, g, b;
-} vertex;
-
 #define FIELD_OF_VIEW 65.0
 
-#define LOCATION_VPOSITION 0
-#define LOCATION_VCOLOR 1
-
-#define VERTICES_CUBE 36
-static const vertex dataCube[VERTICES_CUBE] = {
-    // Front
-    { -1.0f, -1.0f,  1.0f, 1.0f, 0.0f, 0.0f },
-    {  1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f },
-    { -1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f },
-
-    {  1.0f,  1.0f,  1.0f, 1.0f, 0.0f, 0.0f },
-    {  1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f },
-    { -1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f },
-
-    // Back
-    { -1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 0.0f },
-    {  1.0f, -1.0f, -1.0f, 0.0f, 1.0f, 0.0f },
-    { -1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 1.0f },
-
-    {  1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f },
-    {  1.0f, -1.0f, -1.0f, 0.0f, 1.0f, 0.0f },
-    { -1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 1.0f },
-
-    // Left
-    { -1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f },
-    { -1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f },
-    { -1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f },
-
-    { -1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f },
-    { -1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f },
-    { -1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 1.0f },
-
-    // Right
-    {  1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f },
-    {  1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f },
-    {  1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f },
-
-    {  1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f },
-    {  1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f },
-    {  1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 1.0f },
-
-    // Top
-    { -1.0f,  1.0f,  1.0f, 1.0f, 0.0f, 0.0f },
-    {  1.0f,  1.0f,  1.0f, 0.0f, 1.0f, 0.0f },
-    {  1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 1.0f },
-
-    { -1.0f,  1.0f,  1.0f, 1.0f, 0.0f, 0.0f },
-    { -1.0f,  1.0f, -1.0f, 0.0f, 1.0f, 0.0f },
-    {  1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 1.0f },
-
-    // Bottom
-    { -1.0f, -1.0f,  1.0f, 1.0f, 0.0f, 0.0f },
-    {  1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f },
-    {  1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 1.0f },
-
-    { -1.0f, -1.0f,  1.0f, 1.0f, 0.0f, 0.0f },
-    { -1.0f, -1.0f, -1.0f, 0.0f, 1.0f, 0.0f },
-    {  1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 1.0f }
-};
-
 GLuint programA;
-GLuint bufferCube;
+vbo *cube;
 GLint locationModel, locationView, locationProjection, locationTime;
 
 static GLuint makeShader(GLenum shaderType, string fileName) {
@@ -182,16 +118,9 @@ void setupRenderer(uint32_t argc, char *argv[]) {
     locationTime = glGetUniformLocation(programA, "time");
 
     // Upload and describe data
-    glGenBuffers(1, &bufferCube);
-    glBindBuffer(GL_ARRAY_BUFFER, bufferCube);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(dataCube), dataCube, GL_STATIC_DRAW);
-
-    glEnableVertexAttribArray(LOCATION_VPOSITION);
-    glVertexAttribPointer(LOCATION_VPOSITION, 3, GL_FLOAT, GL_FALSE,
-                          sizeof(float) * 6, (void*) 0);
-    glEnableVertexAttribArray(LOCATION_VCOLOR);
-    glVertexAttribPointer(LOCATION_VCOLOR, 3, GL_FLOAT, GL_FALSE,
-                          sizeof(float) * 6, (void*) (sizeof(float) * 3));
+    model *cubeModel = loadModel(STR("model/cube.model"));
+    cube = uploadModel(cubeModel);
+    freeModel(cubeModel);
 
     glUseProgram(programA);
 }
@@ -203,17 +132,6 @@ void onViewport(int width, int height) {
     mat4x4 projection;
     mat4x4_perspective(projection, FIELD_OF_VIEW / 180.0 * PI, ratio, 1.0f, 100.0f);
     glUniformMatrix4fv(locationProjection, 1, GL_FALSE, (const float *) projection);
-}
-
-static void drawCube(float x, float y, float z, float yDegrees) {
-    glBindBuffer(GL_ARRAY_BUFFER, bufferCube);
-
-    mat4x4 temp, model;
-    mat4x4_translate(temp, x, y, z);
-    mat4x4_rotate_Y(model, temp, yDegrees / 180.0 * PI);
-    glUniformMatrix4fv(locationModel, 1, GL_FALSE, (const float *) model);
-
-    glDrawArrays(GL_TRIANGLES, 0, VERTICES_CUBE);
 }
 
 void render(double time) {
@@ -228,7 +146,12 @@ void render(double time) {
     glUseProgram(programA);
 
     for (int i = 0; i < 8; i++) {
-        drawCube(sin(i / 8.0 * 2.0 * PI) * 4.0, 0.0, cos(i / 8.0 * 2.0 * PI) * 4.0, time * (i + 1) * 15.0);
+        mat4x4 temp, model;
+        mat4x4_translate(temp, sin(i / 8.0 * 2.0 * PI) * 4.0, 0.0, cos(i / 8.0 * 2.0 * PI) * 4.0);
+        mat4x4_rotate_Y(model, temp, (time * (i + 1) * 15.0) / 180.0 * PI);
+        glUniformMatrix4fv(locationModel, 1, GL_FALSE, (const float *) model);
+
+        drawVBO(cube);
     }
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);

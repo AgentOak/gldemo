@@ -69,8 +69,6 @@ void tick(double delta) {
     double horizontalAngle = -mouseSpeed * mouseX;
     double verticalAngle = mouseSpeed * mouseY;
 
-    //DEBUG("mouse = (%f, %f)", mouseX, mouseY);
-
     vec3 direction = {
         cos(verticalAngle) * sin(horizontalAngle),
         -sin(verticalAngle),
