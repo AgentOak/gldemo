@@ -2,30 +2,48 @@
 
 mat4x4 view;
 
+static bool mouseActive = false;
+static double mouseX = 1600.0, mouseY = 280.0;
 static vec3 position = { 0.0, 4.0, 8.0 };
 
 static GLFWwindow *window;
+
+static void catchMouse() {
+    if (!mouseActive && glfwGetWindowAttrib(window, GLFW_FOCUSED)) {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        glfwSetCursorPos(window, mouseX, mouseY);
+        mouseActive = true;
+    }
+}
+
+static void releaseMouse() {
+    if (mouseActive) {
+        mouseActive = false;
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    }
+}
 
 static void onKey(GLFWwindow *w UNUSED, int key, int scancode UNUSED, int action, int mods UNUSED) {
     if (action == GLFW_PRESS) {
         if (key == GLFW_KEY_Q) {
             glfwSetWindowShouldClose(window, GLFW_TRUE);
         } else if (key == GLFW_KEY_ESCAPE) {
-            // Free the cursor
-            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            releaseMouse();
         }
     }
 }
 
 static void onWindowFocus(GLFWwindow *w UNUSED, int focused) {
-    // Lock the cursor into our window
-    glfwSetInputMode(window, GLFW_CURSOR, focused ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
+    if (focused) {
+        catchMouse();
+    } else {
+        releaseMouse();
+    }
 }
 
 static void onMouseButton(GLFWwindow* w UNUSED, int button UNUSED, int action, int mods UNUSED) {
     if (action == GLFW_PRESS) {
-        // Lock the mouse into our window
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        catchMouse();
     }
 }
 
@@ -45,14 +63,17 @@ void tick(double delta) {
     double movSpeed = 12.0;
     double mouseSpeed = 0.002;
 
-    double xpos, ypos;
-    glfwGetCursorPos(window, &xpos, &ypos);
-    double horizontalAngle = mouseSpeed * xpos;
-    double verticalAngle = mouseSpeed * ypos;
+    if (mouseActive) {
+        glfwGetCursorPos(window, &mouseX, &mouseY);
+    }
+    double horizontalAngle = -mouseSpeed * mouseX;
+    double verticalAngle = mouseSpeed * mouseY;
+
+    //DEBUG("mouse = (%f, %f)", mouseX, mouseY);
 
     vec3 direction = {
         cos(verticalAngle) * sin(horizontalAngle),
-        sin(verticalAngle),
+        -sin(verticalAngle),
         cos(verticalAngle) * cos(horizontalAngle)
     };
 
@@ -62,8 +83,8 @@ void tick(double delta) {
         cos(horizontalAngle - PI / 2.0)
     };
 
-    vec3 up;
-    vec3_mul_cross(up, right, direction);
+    vec3 up = { 0.0, 1.0, 0.0 };
+    //vec3_mul_cross(up, right, direction);
 
     vec3 scaled;
     if (PRESSED(A) || PRESSED(LEFT)) {
