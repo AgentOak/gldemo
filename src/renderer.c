@@ -208,8 +208,7 @@ void onViewport(int width, int height) {
 
     // Set up projection matrix
     mat4x4 projection;
-    // TODO: Figure out near plane
-    mat4x4_perspective(projection, FIELD_OF_VIEW / 180.0 * PI, ratio, 1.0f, -100.0f);
+    mat4x4_perspective(projection, FIELD_OF_VIEW / 180.0 * PI, ratio, 1.0f, 100.0f);
     glUniformMatrix4fv(locationProjection, 1, GL_FALSE, (const float *) projection);
 }
 
