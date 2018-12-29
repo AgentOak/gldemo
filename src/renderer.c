@@ -1,6 +1,7 @@
 #include "renderer.h"
 
 #include "util.h"
+#include "input.h"
 
 #include <glad/glad.h>
 #include <linmath.h>
@@ -193,14 +194,6 @@ void setupRenderer(uint32_t argc, char *argv[]) {
                           sizeof(float) * 6, (void*) (sizeof(float) * 3));
 
     glUseProgram(programA);
-
-    // Set up view matrix
-    mat4x4 view;
-    mat4x4_look_at(view,
-        (float[]) { 8.0, 6.0, 0.0 }, // eye
-        (float[]) { 0.0, -1.0, 0.0 }, // center
-        (float[]) { 0.0, 1.0, 0.0 }); // up
-    glUniformMatrix4fv(locationView, 1, GL_FALSE, (const float *) view);
 }
 
 void onViewport(int width, int height) {
@@ -212,11 +205,7 @@ void onViewport(int width, int height) {
     glUniformMatrix4fv(locationProjection, 1, GL_FALSE, (const float *) projection);
 }
 
-void tick(double delta UNUSED) {
-
-}
-
-void drawCube(float x, float y, float z, float yDegrees) {
+static void drawCube(float x, float y, float z, float yDegrees) {
     glBindBuffer(GL_ARRAY_BUFFER, bufferCube);
 
     mat4x4 temp, model;
@@ -231,6 +220,14 @@ void render(double time) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glUniform1f(locationTime, (float) time);
+
+    // Set up view matrix
+    mat4x4 view;
+    mat4x4_look_at(view,
+        cameraPosition, // eye
+        (float[]) { cameraPosition[0], cameraPosition[1] - 1.0, cameraPosition[2] - 2.0 }, // center
+        (float[]) { 0.0, 1.0, 0.0 }); // up
+    glUniformMatrix4fv(locationView, 1, GL_FALSE, (const float *) view);
 
     // glValidateProgram(programA); ...
     glUseProgram(programA);

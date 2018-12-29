@@ -5,7 +5,6 @@
 
 void setupRenderer(uint32_t argc, char *argv[]);
 void onViewport(int width, int height);
-void tick(double delta);
 void render(double time);
 
 #endif /* RENDERER_H */

@@ -5,7 +5,11 @@
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
+#include <linmath.h>
 
-void onKey(GLFWwindow *window, int key, int scancode, int action, int mods);
+extern vec3 cameraPosition;
+
+void setupInput(GLFWwindow* w);
+void tick(double delta);
 
 #endif /* INPUT_H */

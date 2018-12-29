@@ -76,7 +76,9 @@ void window(app_options *opts) {
 
     // Register callbacks
     glfwSetFramebufferSizeCallback(window, onGLFWFramebufferSize);
-    glfwSetKeyCallback(window, onKey);
+
+    // Input
+    setupInput(window);
 
     // Error handling
     if (debug) {
