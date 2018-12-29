@@ -221,12 +221,7 @@ void render(double time) {
 
     glUniform1f(locationTime, (float) time);
 
-    // Set up view matrix
-    mat4x4 view;
-    mat4x4_look_at(view,
-        cameraPosition, // eye
-        (float[]) { cameraPosition[0], cameraPosition[1] - 1.0, cameraPosition[2] - 2.0 }, // center
-        (float[]) { 0.0, 1.0, 0.0 }); // up
+    // Upload view matrix from input
     glUniformMatrix4fv(locationView, 1, GL_FALSE, (const float *) view);
 
     // glValidateProgram(programA); ...
