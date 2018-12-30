@@ -4,14 +4,15 @@ vec3 cameraPosition = { 0.0, 1.5, 9.5 };
 mat4x4 view;
 
 static bool mouseActive = false;
-static double mouseX = 1570.0, mouseY = 200.0;
+static double horizontalAngle = DEGREES(180.0), verticalAngle = DEGREES(20.0);
+static double lastX = 0.0, lastY = 0.0;
 
 static GLFWwindow *window;
 
 static void catchMouse() {
     if (!mouseActive && glfwGetWindowAttrib(window, GLFW_FOCUSED)) {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-        glfwSetCursorPos(window, mouseX, mouseY);
+        glfwSetCursorPos(window, lastX, lastY);
         mouseActive = true;
     }
 }
@@ -64,14 +65,17 @@ void tick(double delta) {
     double mouseSpeed = 0.002;
 
     if (mouseActive) {
+        double mouseX, mouseY;
         glfwGetCursorPos(window, &mouseX, &mouseY);
+        mouseY = -mouseY; // Convert window coordinates to OpenGL coordinates
+
+        // TODO: Fix rolling over
+        horizontalAngle += mouseSpeed * (lastX - mouseX);
+        verticalAngle += mouseSpeed * (lastY - mouseY);
+
+        lastX = mouseX;
+        lastY = mouseY;
     }
-
-    // TODO: Mouse speed should apply momentarily
-    double horizontalAngle = -mouseSpeed * mouseX;
-    double verticalAngle = mouseSpeed * mouseY;
-
-    // TODO: Fix rolling over
 
     vec3 direction = {
         cos(verticalAngle) * sin(horizontalAngle),

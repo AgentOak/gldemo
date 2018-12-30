@@ -80,8 +80,9 @@ extern bool debug;
 #endif
 
 /*
- * Constants
+ * Mathematics
  */
 #define PI 3.14159265358979323846
+#define DEGREES(degrees) ((degrees) / 180.0 * PI)
 
 #endif /* MASTER_H */

@@ -8,7 +8,7 @@
 #include <linmath.h>
 #include <math.h>
 
-#define FIELD_OF_VIEW 65.0
+#define FIELD_OF_VIEW DEGREES(65.0)
 
 GLuint programA;
 vbo *cube;
@@ -138,7 +138,7 @@ void onViewport(int width, int height) {
 
     // Set up projection matrix
     mat4x4 projection;
-    mat4x4_perspective(projection, FIELD_OF_VIEW / 180.0 * PI, ratio, 0.1f, 100.0f);
+    mat4x4_perspective(projection, FIELD_OF_VIEW, ratio, 0.1f, 100.0f);
     glUniformMatrix4fv(locationProjection, 1, GL_FALSE, (const float *) projection);
 }
 
