@@ -2,62 +2,63 @@
 
 #define LOCATION_VPOSITION 0
 #define LOCATION_VCOLOR 1
+#define LOCATION_VNORMAL 2
 
 #define VERTICES_CUBE 36
 static const vertex dataCube[VERTICES_CUBE] = {
     // Front
-    { -1.0f, -1.0f,  1.0f, 1.0f, 0.0f, 0.0f },
-    {  1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f },
-    { -1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f },
+    { -1.0f, -1.0f,  1.0f, 1.0f, 0.0f, 0.0f,  0.0f,  0.0f,  1.0f },
+    {  1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f,  0.0f,  0.0f,  1.0f },
+    { -1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f,  0.0f,  0.0f,  1.0f },
 
-    {  1.0f,  1.0f,  1.0f, 1.0f, 0.0f, 0.0f },
-    {  1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f },
-    { -1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f },
+    {  1.0f,  1.0f,  1.0f, 1.0f, 0.0f, 0.0f,  0.0f,  0.0f,  1.0f },
+    {  1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f,  0.0f,  0.0f,  1.0f },
+    { -1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f,  0.0f,  0.0f,  1.0f },
 
     // Back
-    { -1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 0.0f },
-    {  1.0f, -1.0f, -1.0f, 0.0f, 1.0f, 0.0f },
-    { -1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 1.0f },
+    { -1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 0.0f,  0.0f,  0.0f, -1.0f },
+    {  1.0f, -1.0f, -1.0f, 0.0f, 1.0f, 0.0f,  0.0f,  0.0f, -1.0f },
+    { -1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 1.0f,  0.0f,  0.0f, -1.0f },
 
-    {  1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f },
-    {  1.0f, -1.0f, -1.0f, 0.0f, 1.0f, 0.0f },
-    { -1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 1.0f },
+    {  1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f,  0.0f,  0.0f, -1.0f },
+    {  1.0f, -1.0f, -1.0f, 0.0f, 1.0f, 0.0f,  0.0f,  0.0f, -1.0f },
+    { -1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 1.0f,  0.0f,  0.0f, -1.0f },
 
     // Left
-    { -1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f },
-    { -1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f },
-    { -1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f },
+    { -1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f, -1.0f,  0.0f,  0.0f },
+    { -1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f, -1.0f,  0.0f,  0.0f },
+    { -1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f, -1.0f,  0.0f,  0.0f },
 
-    { -1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f },
-    { -1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f },
-    { -1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 1.0f },
+    { -1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f, -1.0f,  0.0f,  0.0f },
+    { -1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f, -1.0f,  0.0f,  0.0f },
+    { -1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 1.0f, -1.0f,  0.0f,  0.0f },
 
     // Right
-    {  1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f },
-    {  1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f },
-    {  1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f },
+    {  1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f,  1.0f,  0.0f,  0.0f },
+    {  1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f,  1.0f,  0.0f,  0.0f },
+    {  1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f,  1.0f,  0.0f,  0.0f },
 
-    {  1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f },
-    {  1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f },
-    {  1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 1.0f },
+    {  1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f,  1.0f,  0.0f,  0.0f },
+    {  1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f,  1.0f,  0.0f,  0.0f },
+    {  1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 1.0f,  1.0f,  0.0f,  0.0f },
 
     // Top
-    { -1.0f,  1.0f,  1.0f, 1.0f, 0.0f, 0.0f },
-    {  1.0f,  1.0f,  1.0f, 0.0f, 1.0f, 0.0f },
-    {  1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 1.0f },
+    { -1.0f,  1.0f,  1.0f, 1.0f, 0.0f, 0.0f,  0.0f,  1.0f,  0.0f },
+    {  1.0f,  1.0f,  1.0f, 0.0f, 1.0f, 0.0f,  0.0f,  1.0f,  0.0f },
+    {  1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 1.0f,  0.0f,  1.0f,  0.0f },
 
-    { -1.0f,  1.0f,  1.0f, 1.0f, 0.0f, 0.0f },
-    { -1.0f,  1.0f, -1.0f, 0.0f, 1.0f, 0.0f },
-    {  1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 1.0f },
+    { -1.0f,  1.0f,  1.0f, 1.0f, 0.0f, 0.0f,  0.0f,  1.0f,  0.0f },
+    { -1.0f,  1.0f, -1.0f, 0.0f, 1.0f, 0.0f,  0.0f,  1.0f,  0.0f },
+    {  1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 1.0f,  0.0f,  1.0f,  0.0f },
 
     // Bottom
-    { -1.0f, -1.0f,  1.0f, 1.0f, 0.0f, 0.0f },
-    {  1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f },
-    {  1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 1.0f },
+    { -1.0f, -1.0f,  1.0f, 1.0f, 0.0f, 0.0f,  0.0f, -1.0f,  0.0f },
+    {  1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f,  0.0f, -1.0f,  0.0f },
+    {  1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 1.0f,  0.0f, -1.0f,  0.0f },
 
-    { -1.0f, -1.0f,  1.0f, 1.0f, 0.0f, 0.0f },
-    { -1.0f, -1.0f, -1.0f, 0.0f, 1.0f, 0.0f },
-    {  1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 1.0f }
+    { -1.0f, -1.0f,  1.0f, 1.0f, 0.0f, 0.0f,  0.0f, -1.0f,  0.0f },
+    { -1.0f, -1.0f, -1.0f, 0.0f, 1.0f, 0.0f,  0.0f, -1.0f,  0.0f },
+    {  1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 1.0f,  0.0f, -1.0f,  0.0f }
 };
 
 model *loadModel(string fileName UNUSED) {
@@ -85,10 +86,13 @@ vbo *uploadModel(model *mod) {
     glBufferData(GL_ARRAY_BUFFER, mod->vertexCount * sizeof(vertex), mod->vertices, GL_STATIC_DRAW);
 
     glVertexAttribPointer(LOCATION_VPOSITION, 3, GL_FLOAT, GL_FALSE,
-                          sizeof(float) * 6, (void*) 0);
+                          sizeof(float) * 9, (void*) (sizeof(float) * 0));
     
     glVertexAttribPointer(LOCATION_VCOLOR, 3, GL_FLOAT, GL_FALSE,
-                          sizeof(float) * 6, (void*) (sizeof(float) * 3));
+                          sizeof(float) * 9, (void*) (sizeof(float) * 3));
+
+    glVertexAttribPointer(LOCATION_VNORMAL, 3, GL_FLOAT, GL_FALSE,
+                          sizeof(float) * 9, (void*) (sizeof(float) * 6));
 
     return object;
 }
@@ -103,6 +107,7 @@ void drawVBO(vbo *object) {
 
     glEnableVertexAttribArray(LOCATION_VPOSITION);
     glEnableVertexAttribArray(LOCATION_VCOLOR);
+    glEnableVertexAttribArray(LOCATION_VNORMAL);
 
     glDrawArrays(GL_TRIANGLES, 0, object->vertexCount);
 }

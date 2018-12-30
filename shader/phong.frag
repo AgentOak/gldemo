@@ -1,31 +1,30 @@
 #version 330 core
 
-uniform sampler2D gl_Texture0;
+uniform mat4 model;
+uniform mat4 view;
+uniform vec3 cameraPosition;
 
-in vec3 normal;
 in vec3 position;
+in vec4 color;
+in vec3 normal;
+
+layout(location = 0) out vec4 fragColor;
 
 void main() {
-    vec3 dirToCam = -normalize(position);
+    vec3 dirToCam = normalize(cameraPosition - position);
+    vec3 dirToLight = normalize(vec3(0.0, 0.0, 0.0) - position);
 
-    /* begin edit here */
-    vec3 ndirToLight = normalize(gl_LightSource[0].position.xyz - position);
+    // Ambient = k_a * L_a
+    vec3 ambient = vec3(0.1, 0.1, 0.1) * vec3(1.0, 1.0, 1.0);
 
-    // L_ra = k_a * L_a */
-    vec4 ambient = gl_FrontMaterial.ambient * gl_LightSource[0].ambient;
+    // Diffuse = k_d * L_p * cos(theta)
+    vec3 diffuse = vec3(0.5, 0.5, 0.5) * vec3(1.0, 1.0, 1.0) * clamp(dot(dirToLight, normal), 0.0, 1.0);
 
-    // L_d = k_d * L_p * cos(theta) */
-    vec4 diffuse = gl_FrontMaterial.diffuse * gl_LightSource[0].diffuse * dot(ndirToLight, normal);
+    // Specular = k_s * L_p * cos^m(alpha)
+    vec3 r = normalize(2.0 * normal * dot(normal, dirToLight) - dirToLight);
+    float alpha = max(0.0, dot(dirToCam, r));
+    vec3 specular = vec3(0.8, 0.8, 0.8) * vec3(1.0, 1.0, 1.0) * pow(alpha, 6.0);
 
-    // L_s = k_s * L_p * cos^m(alpha)
-    vec3 r = normalize(2.0 * normal * dot(normal, ndirToLight) - ndirToLight);
-    float alpha = max(0, dot(dirToCam, r));
-    vec4 specular = gl_FrontMaterial.specular * gl_LightSource[0].specular *
-                    pow(alpha, gl_FrontMaterial.shininess);
-
-    // L = L_ra + L_d + L_s
-    vec4 color = ambient + diffuse + specular;
-    /* end edit here */
-
-    gl_FragColor = color * texture2D(gl_Texture0, gl_TexCoord[0].xy);
+    vec3 light = ambient + diffuse + specular;
+    fragColor = vec4(light * color.rgb, color.a);
 }

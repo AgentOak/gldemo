@@ -7,6 +7,7 @@
 #include <GLFW/glfw3.h>
 #include <linmath.h>
 
+extern vec3 cameraPosition;
 extern mat4x4 view;
 
 void setupInput(GLFWwindow* w);

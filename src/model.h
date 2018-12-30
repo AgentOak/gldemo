@@ -10,6 +10,7 @@
 typedef struct vertex_data {
     float x, y, z;
     float r, g, b;
+    float nX, nY, nZ;
 } vertex;
 
 typedef struct model_data {

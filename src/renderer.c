@@ -12,7 +12,14 @@
 
 GLuint programA;
 vbo *cube;
-GLint locationModel, locationView, locationProjection, locationTime;
+GLint locationModel, locationView, locationProjection, locationCameraPosition, locationTime;
+
+static mat4x4 identity = {
+    { 1.0f, 0.0f, 0.0f, 0.0f },
+    { 0.0f, 1.0f, 0.0f, 0.0f },
+    { 0.0f, 0.0f, 1.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f, 1.0f }
+};
 
 static GLuint makeShader(GLenum shaderType, string fileName) {
     DEBUG("Compiling shader '%s'", fileName.str);
@@ -115,6 +122,7 @@ void setupRenderer(uint32_t argc, char *argv[]) {
     locationModel = glGetUniformLocation(programA, "model");
     locationView = glGetUniformLocation(programA, "view");
     locationProjection = glGetUniformLocation(programA, "projection");
+    locationCameraPosition = glGetUniformLocation(programA, "cameraPosition");
     locationTime = glGetUniformLocation(programA, "time");
 
     // Upload and describe data
@@ -141,17 +149,22 @@ void render(double time) {
 
     // Upload view matrix from input
     glUniformMatrix4fv(locationView, 1, GL_FALSE, (const float *) view);
+    glUniform3fv(locationCameraPosition, 1, (const float *) cameraPosition);
 
     // glValidateProgram(programA); ...
     glUseProgram(programA);
 
+    mat4x4 trans, rotate, scale, temp, model;
     for (int i = 0; i < 8; i++) {
-        mat4x4 temp, model;
-        mat4x4_translate(temp,
+        mat4x4_scale(scale, identity, 0.4 + 0.4 * (cos(i * 3.0) + 1.0));
+        scale[3][3] = 1.0;
+        mat4x4_translate(trans,
              sin(i / 8.0 * 2.0 * PI) * 4.0,
             -cos(i / 8.0 * 2.0 * PI) * 2.0,
              cos(i / 8.0 * 2.0 * PI) * 6.0);
-        mat4x4_rotate_Y(model, temp, (time * (i + 1) * 15.0) / 180.0 * PI);
+        mat4x4_rotate_Y(rotate, identity, (time * (i + 1) * 15.0) / 180.0 * PI);
+        mat4x4_mul(temp, scale, rotate);
+        mat4x4_mul(model, trans, temp);
         glUniformMatrix4fv(locationModel, 1, GL_FALSE, (const float *) model);
 
         drawVBO(cube);

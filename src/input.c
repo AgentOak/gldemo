@@ -1,10 +1,10 @@
 #include "input.h"
 
+vec3 cameraPosition = { 0.0, 1.5, 9.5 };
 mat4x4 view;
 
 static bool mouseActive = false;
-static double mouseX = 1570.0, mouseY = 230.0;
-static vec3 position = { 0.0, 2.5, 9.5 };
+static double mouseX = 1570.0, mouseY = 200.0;
 
 static GLFWwindow *window;
 
@@ -66,8 +66,12 @@ void tick(double delta) {
     if (mouseActive) {
         glfwGetCursorPos(window, &mouseX, &mouseY);
     }
+
+    // TODO: Mouse speed should apply momentarily
     double horizontalAngle = -mouseSpeed * mouseX;
     double verticalAngle = mouseSpeed * mouseY;
+
+    // TODO: Fix rolling over
 
     vec3 direction = {
         cos(verticalAngle) * sin(horizontalAngle),
@@ -84,33 +88,34 @@ void tick(double delta) {
     vec3 up = { 0.0, 1.0, 0.0 };
     //vec3_mul_cross(up, right, direction);
 
+    // TODO: Normalize
     vec3 scaled;
     if (PRESSED(A) || PRESSED(LEFT)) {
         vec3_scale(scaled, right, -movSpeed * delta);
-        vec3_add(position, position, scaled);
+        vec3_add(cameraPosition, cameraPosition, scaled);
     }
     if (PRESSED(D) || PRESSED(RIGHT)) {
         vec3_scale(scaled, right, movSpeed * delta);
-        vec3_add(position, position, scaled);
+        vec3_add(cameraPosition, cameraPosition, scaled);
     }
     if (PRESSED(W) || PRESSED(UP)) {
         vec3_scale(scaled, direction, movSpeed * delta);
-        vec3_add(position, position, scaled);
+        vec3_add(cameraPosition, cameraPosition, scaled);
     }
     if (PRESSED(S) || PRESSED(DOWN)) {
         vec3_scale(scaled, direction, -movSpeed * delta);
-        vec3_add(position, position, scaled);
+        vec3_add(cameraPosition, cameraPosition, scaled);
     }
     if (PRESSED(R) || PRESSED(SPACE)) {
         vec3_scale(scaled, up, movSpeed * delta);
-        vec3_add(position, position, scaled);
+        vec3_add(cameraPosition, cameraPosition, scaled);
     }
     if (PRESSED(F) || PRESSED(LEFT_SHIFT)) {
         vec3_scale(scaled, up, -movSpeed * delta);
-        vec3_add(position, position, scaled);
+        vec3_add(cameraPosition, cameraPosition, scaled);
     }
 
     vec3 lookAt;
-    vec3_add(lookAt, position, direction);
-    mat4x4_look_at(view, position, lookAt, up);
+    vec3_add(lookAt, cameraPosition, direction);
+    mat4x4_look_at(view, cameraPosition, lookAt, up);
 }
