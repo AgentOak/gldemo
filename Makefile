@@ -2,7 +2,7 @@ CC=gcc
 #CC=clang
 
 UFLAGS=
-CFLAGS=-O2 -g -Wall -Wextra -Werror -Wformat=2 -Wno-error=unused-variable -Wno-error=unused-parameter -Wno-error=unused-function -std=c99 -pedantic $(UFLAGS)
+CFLAGS=-O2 -g -Wall -Wextra -Werror -Wformat=2 -Wno-error=unused-variable -Wno-error=unused-but-set-variable -Wno-error=unused-parameter -Wno-error=unused-function -std=c99 -pedantic $(UFLAGS)
 LIB=-lglfw -ldl -lm
 INC=-Iinclude
 

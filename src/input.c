@@ -77,7 +77,7 @@ void tick(double delta) {
         lastY = mouseY;
     }
 
-    vec3 direction = {
+    vec3 ahead = {
         cos(verticalAngle) * sin(horizontalAngle),
         -sin(verticalAngle),
         cos(verticalAngle) * cos(horizontalAngle)
@@ -90,36 +90,39 @@ void tick(double delta) {
     };
 
     vec3 up = { 0.0, 1.0, 0.0 };
-    //vec3_mul_cross(up, right, direction);
+    //vec3_mul_cross(up, right, direction); // Alternative up/down movement based on view angle
 
-    // TODO: Normalize
-    vec3 scaled;
+    // Note: ahead, right and up are already normalized
+    vec3 temp;
+    vec3 direction = { 0.0, 0.0, 0.0 };
     if (PRESSED(A) || PRESSED(LEFT)) {
-        vec3_scale(scaled, right, -movSpeed * delta);
-        vec3_add(cameraPosition, cameraPosition, scaled);
+        vec3_scale(temp, right, -1.0); // left
+        vec3_add(direction, direction, temp);
     }
     if (PRESSED(D) || PRESSED(RIGHT)) {
-        vec3_scale(scaled, right, movSpeed * delta);
-        vec3_add(cameraPosition, cameraPosition, scaled);
+        vec3_add(direction, direction, right);
     }
     if (PRESSED(W) || PRESSED(UP)) {
-        vec3_scale(scaled, direction, movSpeed * delta);
-        vec3_add(cameraPosition, cameraPosition, scaled);
+        vec3_add(direction, direction, ahead);
     }
     if (PRESSED(S) || PRESSED(DOWN)) {
-        vec3_scale(scaled, direction, -movSpeed * delta);
-        vec3_add(cameraPosition, cameraPosition, scaled);
+        vec3_scale(temp, ahead, -1.0); // left
+        vec3_add(direction, direction, temp);
     }
     if (PRESSED(R) || PRESSED(SPACE)) {
-        vec3_scale(scaled, up, movSpeed * delta);
-        vec3_add(cameraPosition, cameraPosition, scaled);
+        vec3_add(direction, direction, up);
     }
     if (PRESSED(F) || PRESSED(LEFT_SHIFT)) {
-        vec3_scale(scaled, up, -movSpeed * delta);
-        vec3_add(cameraPosition, cameraPosition, scaled);
+        vec3_scale(temp, up, -1.0); // down
+        vec3_add(direction, direction, temp);
     }
 
+    // Normalize: length might be 0.0, in which case we would divide by zero
+    double length = fmax(1.0, vec3_len(direction));
+    vec3_scale(direction, direction, movSpeed * delta / length);
+    vec3_add(cameraPosition, cameraPosition, direction);
+
     vec3 lookAt;
-    vec3_add(lookAt, cameraPosition, direction);
+    vec3_add(lookAt, cameraPosition, ahead);
     mat4x4_look_at(view, cameraPosition, lookAt, up);
 }
