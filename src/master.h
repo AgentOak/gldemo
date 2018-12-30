@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
+#include <math.h>
 
 #define GLDEMO_VERSION "0.1"
 #define GLDEMO_NAME "GLDemo v" GLDEMO_VERSION
@@ -83,6 +84,11 @@ extern bool debug;
  * Mathematics
  */
 #define PI 3.14159265358979323846
-#define DEGREES(degrees) ((degrees) / 180.0 * PI)
+#define DEG2RAD(degrees) ((PI / 180.0) * (degrees))
+#define RAD2DEG(radians) ((180.0 / PI) * (radians))
+
+static inline double clamp(double val, double min, double max) {
+    return fmax(min, fmin(max, val));
+}
 
 #endif /* MASTER_H */

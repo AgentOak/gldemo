@@ -1,10 +1,13 @@
 #include "input.h"
 
+#define MAX_VERICAL_ANGLE DEG2RAD(89.99)
+#define MIN_VERICAL_ANGLE DEG2RAD(-89.99)
+
 vec3 cameraPosition = { 0.0, 1.5, 9.5 };
 mat4x4 view;
 
 static bool mouseActive = false;
-static double horizontalAngle = DEGREES(180.0), verticalAngle = DEGREES(20.0);
+static double horizontalAngle = DEG2RAD(180.0), verticalAngle = DEG2RAD(20.0);
 static double lastX = 0.0, lastY = 0.0;
 
 static GLFWwindow *window;
@@ -69,9 +72,11 @@ void tick(double delta) {
         glfwGetCursorPos(window, &mouseX, &mouseY);
         mouseY = -mouseY; // Convert window coordinates to OpenGL coordinates
 
-        // TODO: Fix rolling over
         horizontalAngle += mouseSpeed * (lastX - mouseX);
         verticalAngle += mouseSpeed * (lastY - mouseY);
+
+        horizontalAngle = remainder(horizontalAngle, DEG2RAD(360.0));
+        verticalAngle = clamp(verticalAngle, MIN_VERICAL_ANGLE, MAX_VERICAL_ANGLE);
 
         lastX = mouseX;
         lastY = mouseY;

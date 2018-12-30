@@ -6,9 +6,8 @@
 
 #include <glad/glad.h>
 #include <linmath.h>
-#include <math.h>
 
-#define FIELD_OF_VIEW DEGREES(65.0)
+#define FIELD_OF_VIEW DEG2RAD(65.0)
 
 GLuint programA;
 vbo *cube;
