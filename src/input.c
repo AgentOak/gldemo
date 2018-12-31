@@ -1,7 +1,7 @@
 #include "input.h"
 
-#define MAX_VERICAL_ANGLE DEG2RAD(89.99)
-#define MIN_VERICAL_ANGLE DEG2RAD(-89.99)
+#define MAX_VERTICAL_ANGLE DEG2RAD(89.99)
+#define MIN_VERTICAL_ANGLE DEG2RAD(-89.99)
 
 vec3 cameraPosition = { 0.0, 1.5, 9.5 };
 mat4x4 view;
@@ -61,7 +61,7 @@ void setupInput(GLFWwindow *w) {
     glfwSetMouseButtonCallback(window, onMouseButton);
 }
 
-#define PRESSED(key) (glfwGetKey(window, GLFW_KEY_## key) == GLFW_PRESS)
+#define PRESSED(key) (glfwGetKey(window, GLFW_KEY_##key) == GLFW_PRESS)
 
 void tick(double delta) {
     double movSpeed = 12.0;
@@ -76,7 +76,7 @@ void tick(double delta) {
         verticalAngle += mouseSpeed * (lastY - mouseY);
 
         horizontalAngle = remainder(horizontalAngle, DEG2RAD(360.0));
-        verticalAngle = clamp(verticalAngle, MIN_VERICAL_ANGLE, MAX_VERICAL_ANGLE);
+        verticalAngle = clamp(verticalAngle, MIN_VERTICAL_ANGLE, MAX_VERTICAL_ANGLE);
 
         lastX = mouseX;
         lastY = mouseY;
