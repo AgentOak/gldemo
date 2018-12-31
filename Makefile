@@ -2,7 +2,7 @@ CC=gcc
 #CC=clang
 
 UFLAGS=
-CFLAGS=-O2 -g -Wall -Wextra -Werror -Wformat=2 -Wno-error=unused-variable -Wno-error=unused-but-set-variable -Wno-error=unused-parameter -Wno-error=unused-function -std=c99 -pedantic $(UFLAGS)
+CFLAGS=-O2 -g -Wall -Wextra -Werror -Wformat=2 -Wno-error=unused-variable -Wno-error=unused-parameter -Wno-error=unused-function -std=c99 -pedantic $(UFLAGS)
 LIB=-lglfw -ldl -lm
 INC=-Iinclude
 
@@ -37,7 +37,7 @@ $(EXE): $(OBJ_PATH)
 
 # Build GLAD using different flags
 $(BUILDDIR)/glad.o: $(SRCDIR)/glad.c include/glad/glad.h include/KHR/khrplatform.h | $(BUILDDIR)/
-	$(CC) -O2 -Wall -Wextra -Werror -std=c99 $(INC) -c -o $@ $<
+	$(CC) -O3 -Wall -Wextra -std=c99 $(INC) -c -o $@ $<
 
 # Build own source files
 $(BUILDDIR)/%.o: $(SRCDIR)/%.c $(DEPS) | $(BUILDDIR)/

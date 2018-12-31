@@ -4,7 +4,7 @@
 #include "master.h"
 #include "util.h"
 
-#include <GLAD/glad.h>
+#include <glad/glad.h>
 #include <linmath.h>
 
 typedef struct vertex_data {
