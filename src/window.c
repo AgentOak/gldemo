@@ -22,8 +22,8 @@ static void onGLFWError(int error, const char *message) {
 static void GLAPIENTRY onGLError(GLenum source, GLenum type, GLuint id,
     GLenum severity, GLsizei length UNUSED, const GLchar* message, const void* userParam UNUSED) {
 
-    WARN("[%s] source=0x%x, severity=0x%x, id=%d\n\t%s",
-        (type == GL_DEBUG_TYPE_ERROR ? "GL ERROR" : "GL DEBUG"), source, severity, id, message);
+    WARN("[%s] source=0x%x, severity=0x%x, type=0x%x, id=%d\n\t%s",
+        (type == GL_DEBUG_TYPE_ERROR ? "GL ERROR" : "GL DEBUG"), source, severity, type, id, message);
 }
 
 static void onGLFWFramebufferSize(GLFWwindow *window UNUSED, int width, int height) {
@@ -32,7 +32,7 @@ static void onGLFWFramebufferSize(GLFWwindow *window UNUSED, int width, int heig
     onViewport(width, height);
 }
 
-void window(app_options *opts) {
+void window() {
     /* GLFW - OpenGL Toolkit */
     NOTICE("Initializing GLFW");
     INFO("GLFW version: %s", glfwGetVersionString());
@@ -51,7 +51,7 @@ void window(app_options *opts) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    if (debug) {
+    if (opts->debug) {
         INFO("Requesting debug context");
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
     }
@@ -113,7 +113,7 @@ void window(app_options *opts) {
         glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_KHR);
         glDebugMessageCallbackKHR(onGLError, NULL);
         glDebugMessageControlKHR(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_TRUE);
-    } else if (debug && GLAD_GL_ARB_debug_output) {
+    } else if (opts->debug && GLAD_GL_ARB_debug_output) {
         NOTICE("Enabling message callbacks via extension ARB_debug_output");
         // ARB_debug_output is available if (and only if) we have a debug context; no glEnable() call is necessary
         glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);

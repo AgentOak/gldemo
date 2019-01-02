@@ -3,8 +3,7 @@
 
 #include <getopt.h>
 
-bool verbose = false;
-bool debug = false;
+const app_options *opts;
 
 static void printHelp(char *argv0) {
     printf(GLDEMO_NAME "\n\
@@ -30,13 +29,13 @@ Parameters:\n\
 
 int main(int argc, char *argv[]) {
     // Construct options with defaults
-    app_options *opts = malloc(sizeof(*opts));
-    if (!opts) {
+    app_options *newopts = malloc(sizeof(*opts));
+    if (!newopts) {
         FAIL("Could not allocate memory for options");
     }
 
-    opts->swapInterval = 1;
-    opts->frameLimit = 0;
+    newopts->swapInterval = 1;
+    newopts->frameLimit = 0;
 
     int opt;
     while ((opt = getopt(argc, argv, "hHVvDs:l:")) != -1) {
@@ -49,16 +48,16 @@ int main(int argc, char *argv[]) {
                 printf(GLDEMO_NAME "\n");
                 return EXIT_SUCCESS;
             case 'v':
-                verbose = true;
+                newopts->verbose = true;
                 break;
             case 'D':
-                debug = true;
+                newopts->debug = true;
                 break;
             case 's':
-                opts->swapInterval = (uint16_t) strtoul(optarg, NULL, 10);
+                newopts->swapInterval = (uint16_t) strtoul(optarg, NULL, 10);
                 break;
             case 'l':
-                opts->frameLimit = (uint16_t) strtoul(optarg, NULL, 10);
+                newopts->frameLimit = (uint16_t) strtoul(optarg, NULL, 10);
                 break;
             case '?':
                 printHelp(argv[0]);
@@ -71,15 +70,17 @@ int main(int argc, char *argv[]) {
     INFO(GLDEMO_NAME);
 
     // Pass other arguments to the scene
-    opts->argc = (uint32_t) argc - optind;
-    opts->argv = &argv[optind];
+    newopts->argc = (uint32_t) argc - optind;
+    newopts->argv = &argv[optind];
+
+    opts = newopts;
 
     for (uint32_t i = 0; i < opts->argc; i++) {
         NOTICE("Additional argument %d: %s", i, opts->argv[i]);
     }
 
-    window(opts);
+    window();
 
-    free(opts);
+    free(newopts);
     return EXIT_SUCCESS;
 }

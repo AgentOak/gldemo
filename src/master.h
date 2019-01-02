@@ -11,14 +11,24 @@
 #define GLDEMO_VERSION "0.1"
 #define GLDEMO_NAME "GLDemo v" GLDEMO_VERSION
 
-extern bool verbose;
-extern bool debug;
+typedef struct {
+    bool verbose;
+    bool debug;
+
+    uint16_t swapInterval;
+    uint16_t frameLimit;
+
+    uint32_t argc;
+    char **argv;
+} app_options;
+
+extern const app_options *opts;
 
 /*
  * Print macros
  */
 #define NOTICE(...) \
-    if (verbose) {\
+    if (opts->verbose) {\
         printf("[NOTICE] ");\
         printf(__VA_ARGS__);\
         printf("\n");\

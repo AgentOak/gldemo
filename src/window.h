@@ -3,14 +3,6 @@
 
 #include "master.h"
 
-typedef struct {
-    uint16_t swapInterval;
-    uint16_t frameLimit;
-
-    uint32_t argc;
-    char **argv;
-} app_options;
-
-void window(app_options *opts);
+void window();
 
 #endif /* WINDOW_H */
