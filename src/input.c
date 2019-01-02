@@ -111,7 +111,7 @@ void tick(double delta) {
         vec3_add(direction, direction, ahead);
     }
     if (PRESSED(S) || PRESSED(DOWN)) {
-        vec3_scale(temp, ahead, -1.0); // left
+        vec3_scale(temp, ahead, -1.0); // back
         vec3_add(direction, direction, temp);
     }
     if (PRESSED(R) || PRESSED(SPACE)) {

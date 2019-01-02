@@ -1,12 +1,11 @@
-#ifndef GLDEMO_H
-#define GLDEMO_H
+#ifndef WINDOW_H
+#define WINDOW_H
 
 #include "master.h"
 
 typedef struct {
     uint16_t swapInterval;
     uint16_t frameLimit;
-    // TODO: Add fullscreen/monitor mode options
 
     uint32_t argc;
     char **argv;
@@ -14,4 +13,4 @@ typedef struct {
 
 void window(app_options *opts);
 
-#endif /* GLDEMO_H */
+#endif /* WINDOW_H */

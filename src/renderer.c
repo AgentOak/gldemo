@@ -21,7 +21,7 @@ static mat4x4 identity = {
 };
 
 static GLuint makeShader(GLenum shaderType, string fileName) {
-    DEBUG("Compiling shader '%s'", fileName.str);
+    NOTICE("Compiling shader '%s'", fileName.str);
 
     string shaderSource = readFile(fileName);
     if (!shaderSource.str) {
@@ -37,25 +37,7 @@ static GLuint makeShader(GLenum shaderType, string fileName) {
 
     GLint compileStatus;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &compileStatus);
-
     if (!compileStatus) {
-        //if (!GLAD_GL_VERSION_4_3) {
-        //    GLint shaderLogLength;
-        //    glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &shaderLogLength);
-        //
-        //    if (shaderLogLength > 0) {
-        //        char *shaderLog = malloc(shaderLogLength);
-        //        if (!shaderLog) {
-        //            FAIL("Couldn't allocate memory for shader info log");
-        //        }
-        //        glGetShaderInfoLog(shader, shaderLogLength, NULL, shaderLog);
-        //
-        //        WARN("[GLSL] Shader '%s' log: %s", fileName.str, shaderLog);
-        //
-        //        free(shaderLog);
-        //    }
-        //}
-
         FAIL("Shader '%s' did not compile", fileName.str);
     }
 
@@ -63,31 +45,13 @@ static GLuint makeShader(GLenum shaderType, string fileName) {
 }
 
 static void makeProgram(GLuint program) {
-    DEBUG("Linking program");
+    NOTICE("Linking program");
 
     glLinkProgram(program);
 
     GLint linkStatus;
     glGetProgramiv(program, GL_LINK_STATUS, &linkStatus);
-
     if (!linkStatus) {
-        //if (!GLAD_GL_VERSION_4_3) {
-        //    GLint programLogLength;
-        //    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &programLogLength);
-        //
-        //    if (programLogLength > 0) {
-        //        char *programLog = malloc(programLogLength);
-        //        if (!programLog) {
-        //            FAIL("Couldn't allocate memory for program info log");
-        //        }
-        //        glGetProgramInfoLog(program, programLogLength, NULL, programLog);
-        //
-        //        WARN("[GLSL] Program log: %s", programLog);
-        //
-        //        free(programLog);
-        //    }
-        //}
-
         FAIL("Program did not link");
     }
 }

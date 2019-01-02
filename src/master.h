@@ -11,29 +11,31 @@
 #define GLDEMO_VERSION "0.1"
 #define GLDEMO_NAME "GLDemo v" GLDEMO_VERSION
 
+extern bool verbose;
 extern bool debug;
 
 /*
  * Print macros
  */
-#define INFO(...) \
-    printf(__VA_ARGS__);\
-    printf("\n");
-
-#define DEBUG(...) \
-    if (debug) {\
-        printf("[DEBUG] ");\
+#define NOTICE(...) \
+    if (verbose) {\
+        printf("[NOTICE] ");\
         printf(__VA_ARGS__);\
         printf("\n");\
     }
 
+#define INFO(...) \
+    printf("[ INFO ] ");\
+    printf(__VA_ARGS__);\
+    printf("\n");
+
 #define WARN(...) \
-    fprintf(stderr, "[WARN] ");\
+    fprintf(stderr, "[ WARN ] ");\
     fprintf(stderr, __VA_ARGS__);\
     fprintf(stderr, "\n");
 
 #define ERROR(...) \
-    fprintf(stderr, "[ERROR] ");\
+    fprintf(stderr, "[ ERROR] ");\
     fprintf(stderr, __VA_ARGS__);\
     fprintf(stderr, "\n");
 

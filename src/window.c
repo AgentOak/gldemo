@@ -7,8 +7,10 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#define DEBUG_GL_STRING(name) \
-    DEBUG(#name ": %s", glGetString(name))
+#define NOTICE_GL_STRING(name) \
+    NOTICE(#name ": %s", glGetString(name));
+#define NOTICE_GL_EXTENSION(name) \
+    NOTICE(#name ": %s", GLAD_GL_##name ? "Supported" : "Not supported");
 
 #define RES_DEFAULT_WIDTH 1280
 #define RES_DEFAULT_HEIGHT 720
@@ -19,6 +21,7 @@ static void onGLFWError(int error, const char *message) {
 
 static void GLAPIENTRY onGLError(GLenum source, GLenum type, GLuint id,
     GLenum severity, GLsizei length UNUSED, const GLchar* message, const void* userParam UNUSED) {
+
     WARN("[%s] source=0x%x, severity=0x%x, id=%d\n\t%s",
         (type == GL_DEBUG_TYPE_ERROR ? "GL ERROR" : "GL DEBUG"), source, severity, id, message);
 }
@@ -31,9 +34,9 @@ static void onGLFWFramebufferSize(GLFWwindow *window UNUSED, int width, int heig
 
 void window(app_options *opts) {
     /* GLFW - OpenGL Toolkit */
-    DEBUG("Creating context...");
+    NOTICE("Initializing GLFW");
     INFO("GLFW version: %s", glfwGetVersionString());
-    DEBUG("Compiled against GLFW version %d.%d.%d", GLFW_VERSION_MAJOR, GLFW_VERSION_MINOR, GLFW_VERSION_REVISION);
+    NOTICE("Compiled against GLFW version %d.%d.%d", GLFW_VERSION_MAJOR, GLFW_VERSION_MINOR, GLFW_VERSION_REVISION);
 
     glfwSetErrorCallback(onGLFWError);
 
@@ -43,13 +46,18 @@ void window(app_options *opts) {
 
     atexit(glfwTerminate); // Don't care if this fails
 
+    NOTICE("Creating context");
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    // TODO: Debug context
+    if (debug) {
+        INFO("Requesting debug context");
+        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+    }
     glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // Initially hidden before scene is loaded
 
+    // TODO: Fullscreen/Window/Monitor options support
     GLFWwindow *window = glfwCreateWindow(RES_DEFAULT_WIDTH, RES_DEFAULT_HEIGHT, GLDEMO_NAME, NULL, NULL);
     if (!window)  {
         FAIL("Window creation failure");
@@ -58,22 +66,24 @@ void window(app_options *opts) {
     glfwMakeContextCurrent(window);
 
     /* GLAD - OpenGL Function Loader */
-    DEBUG("Loading OpenGL...");
+    NOTICE("Loading OpenGL");
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
         FAIL("OpenGL loader failure");
     }
 
     INFO("OpenGL version: %s", glGetString(GL_VERSION));
-    DEBUG("GLAD: OpenGL version %d.%d", GLVersion.major, GLVersion.minor);
+    NOTICE("GLAD: OpenGL version %d.%d", GLVersion.major, GLVersion.minor);
     if (!GLAD_GL_VERSION_3_3) {
         WARN("The loaded OpenGL driver does not support OpenGL 3.3");
     }
 
-    DEBUG_GL_STRING(GL_VENDOR);
-    DEBUG_GL_STRING(GL_RENDERER);
-    DEBUG_GL_STRING(GL_VERSION);
-    DEBUG_GL_STRING(GL_SHADING_LANGUAGE_VERSION);
-    DEBUG_GL_STRING(GL_EXTENSIONS);
+    NOTICE_GL_STRING(GL_VENDOR);
+    NOTICE_GL_STRING(GL_RENDERER);
+    NOTICE_GL_STRING(GL_SHADING_LANGUAGE_VERSION);
+
+    NOTICE_GL_EXTENSION(KHR_debug); // Core in 4.3
+    NOTICE_GL_EXTENSION(ARB_debug_output); // Deprecated by KHR_debug
+    NOTICE_GL_EXTENSION(ARB_explicit_uniform_location); // Core in 4.3
 
     // Register callbacks
     glfwSetFramebufferSizeCallback(window, onGLFWFramebufferSize);
@@ -81,17 +91,36 @@ void window(app_options *opts) {
     // Input
     setupInput(window);
 
-    // Error handling
-    if (debug) {
-        //if (GLAD_GL_VERSION_4_3) {
-            glEnable(GL_DEBUG_OUTPUT);
-            glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-
-            glDebugMessageCallback(onGLError, NULL); 
-            glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, true);
-        //} else {
-            // TODO: GLAD post callback to check for errors
-        //}
+    /*
+     * Enable OpenGL's debug callbacks; polling errors is dumb.
+     *
+     * Since OpenGL 4.3 drivers are required to support KHR_debug in any case.
+     * However, the amount of messages reported is up to the driver.
+     * In debug contexts more messages might be provided.
+     *
+     * ARB_debug_output is a deprecated extension that provides the same functionality,
+     * but in debug contexts only. Fallback to that if we can.
+     */
+    if (GLAD_GL_VERSION_4_3) {
+        NOTICE("Enabling message callbacks via native KHR_debug");
+        glEnable(GL_DEBUG_OUTPUT);
+        glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+        glDebugMessageCallback(onGLError, NULL);
+        glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_TRUE);
+    } else if (GLAD_GL_KHR_debug) {
+        NOTICE("Enabling message callbacks via extension KHR_debug");
+        glEnable(GL_DEBUG_OUTPUT_KHR);
+        glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_KHR);
+        glDebugMessageCallbackKHR(onGLError, NULL);
+        glDebugMessageControlKHR(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_TRUE);
+    } else if (debug && GLAD_GL_ARB_debug_output) {
+        NOTICE("Enabling message callbacks via extension ARB_debug_output");
+        // ARB_debug_output is available if (and only if) we have a debug context; no glEnable() call is necessary
+        glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
+        glDebugMessageCallbackARB(onGLError, NULL);
+        glDebugMessageControlARB(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_TRUE);
+    } else {
+        WARN("No OpenGL debug mechanisms are supported. Error messages will not be reported.");
     }
 
     // Load scene
@@ -100,23 +129,23 @@ void window(app_options *opts) {
     onViewport(RES_DEFAULT_WIDTH, RES_DEFAULT_HEIGHT);
 
     // Display window late
-    glfwSetTime(0.0);
     glfwSwapInterval(opts->swapInterval);
     glfwShowWindow(window);
+    glfwSetTime(0.0);
 
     /* Main loop */
-    INFO("Done! Entering main loop");
+    INFO("Entering main loop");
     double lastTime = 0.0;
     while (!glfwWindowShouldClose(window)) {
         double currTime = glfwGetTime();
-        // TODO: Properly decouple ticks from render calls & arbitrary frame limit
+        // TODO: Properly decouple ticks from render calls & arbitrary frame limit, get execution order right
         tick(currTime - lastTime);
+
         render(currTime);
+        glfwSwapBuffers(window);
+
         lastTime = currTime;
 
-        // TODO: if (!debug) Check opengl errors once every frame
-
-        glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
