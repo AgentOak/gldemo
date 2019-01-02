@@ -8,7 +8,7 @@ const app_options *opts;
 static void printHelp(char *argv0) {
     printf(GLDEMO_NAME "\n\
 \n\
-Usage: %s [-s <0-2>] [-l <n>] [-v] [-D] [-h] [<additional argument>*]\n\
+Usage: %s [-s <0-2>] [-l <n>] [-r <width>x<height>] [-v] [-D] [-h] [<additional argument>*]\n\
 \n\
 Parameters:\n\
     -s n: Set swap interval to n frames\n\
@@ -18,6 +18,7 @@ Parameters:\n\
     -l n: Set frame limit to n frames per second\n\
         0 disables frame limit (default)\n\
         n outputs a frame at most every 1/n seconds\n\
+    -r <width>x<height>: Set output resolution\n\
     -v: Increase verbosity (print additional information)\n\
     -D: Create an OpenGL debug context\n\
         Depending on the driver, this might enable additional messages\n\
@@ -34,11 +35,15 @@ int main(int argc, char *argv[]) {
         FAIL("Could not allocate memory for options");
     }
 
+    newopts->verbose = false;
+    newopts->debug = false;
     newopts->swapInterval = 1;
     newopts->frameLimit = 0;
+    newopts->outputWidth = 1280;
+    newopts->outputHeight = 720;
 
     int opt;
-    while ((opt = getopt(argc, argv, "hHVvDs:l:")) != -1) {
+    while ((opt = getopt(argc, argv, "hHVvDr:s:l:")) != -1) {
         switch (opt) {
             case 'h':
             case 'H':
@@ -53,11 +58,20 @@ int main(int argc, char *argv[]) {
             case 'D':
                 newopts->debug = true;
                 break;
+            case 'r':
+                if (!sscanf(optarg, "%hux%hu", &newopts->outputWidth, &newopts->outputHeight)) {
+                    FAIL("Illegal argument for -r");
+                }
+                break;
             case 's':
-                newopts->swapInterval = (uint16_t) strtoul(optarg, NULL, 10);
+                if (!sscanf(optarg, "%hu", &newopts->swapInterval)) {
+                    FAIL("Illegal argument for -s");
+                }
                 break;
             case 'l':
-                newopts->frameLimit = (uint16_t) strtoul(optarg, NULL, 10);
+                if (!sscanf(optarg, "%hu", &newopts->frameLimit)) {
+                    FAIL("Illegal argument for -l");
+                }
                 break;
             case '?':
                 printHelp(argv[0]);

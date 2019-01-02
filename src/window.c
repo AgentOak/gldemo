@@ -12,9 +12,6 @@
 #define NOTICE_GL_EXTENSION(name) \
     NOTICE(#name ": %s", GLAD_GL_##name ? "Supported" : "Not supported");
 
-#define RES_DEFAULT_WIDTH 1280
-#define RES_DEFAULT_HEIGHT 720
-
 static void onGLFWError(int error, const char *message) {
     WARN("[GLFW #%d] %s", error, message);
 }
@@ -58,7 +55,7 @@ void window() {
     glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // Initially hidden before scene is loaded
 
     // TODO: Fullscreen/Window/Monitor options support
-    GLFWwindow *window = glfwCreateWindow(RES_DEFAULT_WIDTH, RES_DEFAULT_HEIGHT, GLDEMO_NAME, NULL, NULL);
+    GLFWwindow *window = glfwCreateWindow(opts->outputWidth, opts->outputHeight, GLDEMO_NAME, NULL, NULL);
     if (!window)  {
         FAIL("Window creation failure");
     }
@@ -126,7 +123,7 @@ void window() {
     // Load scene
     INFO("Initializing renderer");
     setupRenderer(opts->argc, opts->argv);
-    onViewport(RES_DEFAULT_WIDTH, RES_DEFAULT_HEIGHT);
+    onViewport(opts->outputWidth, opts->outputHeight);
 
     // Display window late
     glfwSwapInterval(opts->swapInterval);

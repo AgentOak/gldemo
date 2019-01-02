@@ -18,6 +18,9 @@ typedef struct {
     uint16_t swapInterval;
     uint16_t frameLimit;
 
+    uint16_t outputWidth;
+    uint16_t outputHeight;
+
     uint32_t argc;
     char **argv;
 } app_options;
