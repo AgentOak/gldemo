@@ -5,6 +5,12 @@
 #define LOCATION_VNORMAL 2
 
 #define VERTICES_CUBE 36
+static const material materialCube = {
+    .ambient = { 0.1, 0.1, 0.1 },
+    .diffuse = { 0.5, 0.5, 0.5 },
+    .specular = { 0.8, 0.8, 0.8 },
+    .shininess = 6.0
+};
 static const vertex dataCube[VERTICES_CUBE] = {
     // Front
     { -1.0f, -1.0f,  1.0f, 1.0f, 0.0f, 0.0f,  0.0f,  0.0f,  1.0f },
@@ -62,6 +68,17 @@ static const vertex dataCube[VERTICES_CUBE] = {
 };
 
 static vbo *currentObject = NULL;
+static GLint locationMaterialAmbient;
+static GLint locationMaterialDiffuse;
+static GLint locationMaterialSpecular;
+static GLint locationMaterialShininess;
+
+void setupModel(GLuint program) {
+    locationMaterialAmbient = glGetUniformLocation(program, "material.ambient");
+    locationMaterialDiffuse = glGetUniformLocation(program, "material.diffuse");
+    locationMaterialSpecular = glGetUniformLocation(program, "material.specular");
+    locationMaterialShininess = glGetUniformLocation(program, "material.shininess");
+}
 
 model *loadModel(string fileName UNUSED) {
     model *mod = malloc(sizeof(*mod));
@@ -70,6 +87,7 @@ model *loadModel(string fileName UNUSED) {
     }
 
     mod->vertexCount = VERTICES_CUBE;
+    mod->mat = materialCube;
     mod->vertices = malloc(sizeof(vertex) * mod->vertexCount);
     if (!mod->vertices) {
         FAIL("Couldn't allocate memory for model vertices");
@@ -82,12 +100,12 @@ model *loadModel(string fileName UNUSED) {
 vbo *uploadModel(model *mod) {
     vbo *object = malloc(sizeof(*object));
     object->vertexCount = mod->vertexCount;
+    object->mat = mod->mat;
 
     glGenBuffers(1, &object->bufferName);
     glBindBuffer(GL_ARRAY_BUFFER, object->bufferName);
     glBufferData(GL_ARRAY_BUFFER, mod->vertexCount * sizeof(vertex), mod->vertices, GL_STATIC_DRAW);
 
-    // TODO: Move to more general function
     glVertexAttribPointer(LOCATION_VPOSITION, 3, GL_FLOAT, GL_FALSE,
                           sizeof(float) * 9, (void*) (sizeof(float) * 0));
     
@@ -113,6 +131,11 @@ void setVBO(vbo *object) {
     glEnableVertexAttribArray(LOCATION_VPOSITION);
     glEnableVertexAttribArray(LOCATION_VCOLOR);
     glEnableVertexAttribArray(LOCATION_VNORMAL);
+
+    glUniform3fv(locationMaterialAmbient, 1, object->mat.ambient);
+    glUniform3fv(locationMaterialDiffuse, 1, object->mat.diffuse);
+    glUniform3fv(locationMaterialSpecular, 1, object->mat.specular);
+    glUniform1f(locationMaterialShininess, object->mat.shininess);
 }
 
 void drawVBO() {

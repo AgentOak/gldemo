@@ -86,6 +86,8 @@ void setupRenderer(uint32_t argc, char *argv[]) {
     locationCameraPosition = glGetUniformLocation(programA, "cameraPosition");
     locationTime = glGetUniformLocation(programA, "time");
 
+    setupModel(programA);
+
     // Upload and describe data
     model *cubeModel = loadModel(STR("model/cube.model"));
     cube = uploadModel(cubeModel);

@@ -82,12 +82,6 @@ void window() {
     NOTICE_GL_EXTENSION(ARB_debug_output); // Deprecated by KHR_debug
     NOTICE_GL_EXTENSION(ARB_explicit_uniform_location); // Core in 4.3
 
-    // Register callbacks
-    glfwSetFramebufferSizeCallback(window, onGLFWFramebufferSize);
-
-    // Input
-    setupInput(window);
-
     /*
      * Enable OpenGL's debug callbacks; polling errors is dumb.
      *
@@ -119,6 +113,12 @@ void window() {
     } else {
         WARN("No OpenGL debug mechanisms are supported. Error messages will not be reported.");
     }
+
+    // Register callbacks
+    glfwSetFramebufferSizeCallback(window, onGLFWFramebufferSize);
+
+    // Input
+    setupInput(window);
 
     // Load scene
     INFO("Initializing renderer");
