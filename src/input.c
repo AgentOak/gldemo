@@ -3,6 +3,7 @@
 #define MAX_VERTICAL_ANGLE DEG2RAD(89.99)
 #define MIN_VERTICAL_ANGLE DEG2RAD(-89.99)
 
+float fieldOfView = DEG2RAD(65.0);
 vec3 cameraPosition = { 0.0, 1.5, 9.5 };
 mat4x4 view;
 

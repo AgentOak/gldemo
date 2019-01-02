@@ -7,8 +7,6 @@
 #include <glad/glad.h>
 #include <linmath.h>
 
-#define FIELD_OF_VIEW DEG2RAD(65.0)
-
 GLuint programA;
 vbo *cube;
 GLint locationModel, locationView, locationProjection, locationCameraPosition, locationTime;
@@ -101,7 +99,7 @@ void onViewport(int width, int height) {
 
     // Set up projection matrix
     mat4x4 projection;
-    mat4x4_perspective(projection, FIELD_OF_VIEW, ratio, 0.1f, 100.0f);
+    mat4x4_perspective(projection, fieldOfView, ratio, 0.1f, 100.0f);
     glUniformMatrix4fv(locationProjection, 1, GL_FALSE, (const float *) projection);
 }
 
