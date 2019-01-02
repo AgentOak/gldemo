@@ -153,3 +153,9 @@ void resetVBO() {
 
     currentObject = NULL;
 }
+
+void freeVBO(vbo *object) {
+    glDeleteBuffers(1, &object->bufferName);
+
+    free(object);
+}

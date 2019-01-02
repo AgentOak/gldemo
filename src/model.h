@@ -41,6 +41,6 @@ void freeModel(model *mod);
 void setVBO(vbo *object);
 void drawVBO();
 void resetVBO();
-// TODO: Unload VBO
+void freeVBO(vbo *object);
 
 #endif /* MODEL_H */

@@ -3,6 +3,7 @@
 #include "util.h"
 #include "input.h"
 #include "model.h"
+#include "light.h"
 
 #include <glad/glad.h>
 #include <linmath.h>
@@ -87,13 +88,31 @@ void setupRenderer(uint32_t argc, char *argv[]) {
     locationTime = glGetUniformLocation(programA, "time");
 
     setupModel(programA);
+    setupLight(programA);
+
+    glUseProgram(programA);
 
     // Upload and describe data
     model *cubeModel = loadModel(STR("model/cube.model"));
     cube = uploadModel(cubeModel);
     freeModel(cubeModel);
 
-    glUseProgram(programA);
+    // Light source
+    light *li = newLight();
+    li->position[0] = 0.0; li->position[1] = 0.0; li->position[2] = 0.0;
+    li->ambient[0]  = 1.0; li->ambient[1]  = 1.0; li->ambient[2]  = 1.0;
+    li->diffuse[0]  = 1.0; li->diffuse[1]  = 1.0; li->diffuse[2]  = 1.0;
+    li->specular[0] = 1.0; li->specular[1] = 1.0; li->specular[2] = 1.0;
+    addLight(li);
+    freeLight(li);
+
+    li = newLight();
+    li->position[0] = 0.0; li->position[1] = 7.0; li->position[2] = 0.0;
+    li->ambient[0]  = 1.0; li->ambient[1]  = 1.0; li->ambient[2]  = 1.0;
+    li->diffuse[0]  = 1.0; li->diffuse[1]  = 1.0; li->diffuse[2]  = 1.0;
+    li->specular[0] = 1.0; li->specular[1] = 1.0; li->specular[2] = 1.0;
+    addLight(li);
+    freeLight(li);
 }
 
 void onViewport(int width, int height) {

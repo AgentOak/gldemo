@@ -11,9 +11,11 @@ SHADERDIR=shader
 BUILDDIR=build
 
 EXE=gldemo
-DEPS=src/master.h src/window.h src/renderer.h src/model.h src/input.h src/util.h include/glad/glad.h include/linmath.h
-OBJ=main.o window.o renderer.o model.o input.o util.o glad.o
+DEPS=src/master.h src/window.h src/renderer.h src/model.h src/light.h src/input.h src/util.h include/glad/glad.h include/linmath.h
+OBJ=main.o window.o renderer.o model.o light.o input.o util.o glad.o
 SHADER=simple.vert simple.frag phong.vert phong.frag
+
+# TODO: Release build option with LTO, -DNDEBUG, no debug info, stripped
 
 #---------------------------------------------------------------------------------
 # Do not edit below this line
