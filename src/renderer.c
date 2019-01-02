@@ -117,6 +117,8 @@ void render(double time) {
     // glValidateProgram(programA); ...
     glUseProgram(programA);
 
+    setVBO(cube);
+
     mat4x4 trans, rotate, scale, temp, model;
     for (int i = 0; i < 8; i++) {
         mat4x4_scale(scale, identity, 0.4 + 0.4 * (cos(i * 3.0) + 1.0));
@@ -130,8 +132,8 @@ void render(double time) {
         mat4x4_mul(model, trans, temp);
         glUniformMatrix4fv(locationModel, 1, GL_FALSE, (const float *) model);
 
-        drawVBO(cube);
+        drawVBO();
     }
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    resetVBO();
 }

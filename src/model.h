@@ -26,6 +26,10 @@ typedef struct vbo_data {
 model *loadModel(string fileName);
 vbo *uploadModel(model *mod);
 void freeModel(model *mod);
-void drawVBO(vbo *object);
+
+void setVBO(vbo *object);
+void drawVBO();
+void resetVBO();
+// TODO: Unload VBO
 
 #endif /* MODEL_H */

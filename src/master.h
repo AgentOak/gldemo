@@ -8,6 +8,12 @@
 #include <string.h>
 #include <math.h>
 
+#ifndef NDEBUG
+    #include <assert.h>
+#else
+    #define assert(ignore) ((void) 0)
+#endif
+
 #define GLDEMO_VERSION "0.1"
 #define GLDEMO_NAME "GLDemo v" GLDEMO_VERSION
 

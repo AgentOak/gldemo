@@ -61,6 +61,8 @@ static const vertex dataCube[VERTICES_CUBE] = {
     {  1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 1.0f,  0.0f, -1.0f,  0.0f }
 };
 
+static vbo *currentObject = NULL;
+
 model *loadModel(string fileName UNUSED) {
     model *mod = malloc(sizeof(*mod));
     if (!mod) {
@@ -85,6 +87,7 @@ vbo *uploadModel(model *mod) {
     glBindBuffer(GL_ARRAY_BUFFER, object->bufferName);
     glBufferData(GL_ARRAY_BUFFER, mod->vertexCount * sizeof(vertex), mod->vertices, GL_STATIC_DRAW);
 
+    // TODO: Move to more general function
     glVertexAttribPointer(LOCATION_VPOSITION, 3, GL_FLOAT, GL_FALSE,
                           sizeof(float) * 9, (void*) (sizeof(float) * 0));
     
@@ -102,12 +105,28 @@ void freeModel(model *mod) {
     free(mod);
 }
 
-void drawVBO(vbo *object) {
+void setVBO(vbo *object) {
+    currentObject = object;
+
     glBindBuffer(GL_ARRAY_BUFFER, object->bufferName);
 
     glEnableVertexAttribArray(LOCATION_VPOSITION);
     glEnableVertexAttribArray(LOCATION_VCOLOR);
     glEnableVertexAttribArray(LOCATION_VNORMAL);
+}
 
-    glDrawArrays(GL_TRIANGLES, 0, object->vertexCount);
+void drawVBO() {
+    assert(currentObject != NULL);
+
+    glDrawArrays(GL_TRIANGLES, 0, currentObject->vertexCount);
+}
+
+void resetVBO() {
+    glDisableVertexAttribArray(LOCATION_VPOSITION);
+    glDisableVertexAttribArray(LOCATION_VCOLOR);
+    glDisableVertexAttribArray(LOCATION_VNORMAL);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    currentObject = NULL;
 }
