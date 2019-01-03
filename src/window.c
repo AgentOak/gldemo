@@ -122,7 +122,7 @@ void window() {
 
     // Load scene
     INFO("Initializing renderer");
-    setupRenderer(opts->argc, opts->argv);
+    setupRenderer();
     onViewport(opts->outputWidth, opts->outputHeight);
 
     // Display window late

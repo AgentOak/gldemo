@@ -57,7 +57,7 @@ static void makeProgram(GLuint program) {
     }
 }
 
-void setupRenderer(uint32_t argc, char *argv[]) {
+void setupRenderer() {
     // Basic options
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glEnable(GL_DEPTH_TEST);
@@ -68,19 +68,10 @@ void setupRenderer(uint32_t argc, char *argv[]) {
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
 
-    if (argc < 1) {
-        FAIL("No shader name supplied");
-    }
-    string vertexFileName = strprintf("shader/%s.vert", argv[0]);
-    string fragmentFileName = strprintf("shader/%s.frag", argv[0]);
-
     programA = glCreateProgram();
-    glAttachShader(programA, makeShader(GL_VERTEX_SHADER, vertexFileName));
-    glAttachShader(programA, makeShader(GL_FRAGMENT_SHADER, fragmentFileName));
+    glAttachShader(programA, makeShader(GL_VERTEX_SHADER, STR("shader/main.vert")));
+    glAttachShader(programA, makeShader(GL_FRAGMENT_SHADER, STR("shader/main.frag")));
     makeProgram(programA);
-
-    FREESTR(fragmentFileName);
-    FREESTR(vertexFileName);
 
     // Get uniform locations in our program, since we don't use GL_ARB_explicit_uniform_location
     locationModel = glGetUniformLocation(programA, "model");

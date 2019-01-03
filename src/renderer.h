@@ -3,7 +3,7 @@
 
 #include "master.h"
 
-void setupRenderer(uint32_t argc, char *argv[]);
+void setupRenderer();
 void onViewport(int width, int height);
 void render(double time);
 
