@@ -49,7 +49,10 @@ void main() {
         maxLight.r = max(maxLight.r, light.r);
         maxLight.g = max(maxLight.g, light.g);
         maxLight.b = max(maxLight.b, light.b);
+
+        // TODO: Attenuation
     }
 
+    // TODO: Gamma correction
     fragColor = vec4(maxLight * color.rgb, color.a);
 }

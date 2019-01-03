@@ -19,6 +19,8 @@ static mat4x4 identity = {
     { 0.0f, 0.0f, 0.0f, 1.0f }
 };
 
+// TODO: textures
+
 static GLuint makeShader(GLenum shaderType, string fileName) {
     NOTICE("Compiling shader '%s'", fileName.str);
 

@@ -60,6 +60,7 @@ void setupInput(GLFWwindow *w) {
     glfwSetKeyCallback(window, onKey);
     glfwSetWindowFocusCallback(window, onWindowFocus);
     glfwSetMouseButtonCallback(window, onMouseButton);
+    // TODO: Change field of view via mouse wheel
 }
 
 #define PRESSED(key) (glfwGetKey(window, GLFW_KEY_##key) == GLFW_PRESS)

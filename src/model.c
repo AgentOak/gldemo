@@ -81,6 +81,8 @@ void setupModel(GLuint program) {
 }
 
 model *loadModel(string fileName UNUSED) {
+    // TODO: Add obj model loader
+
     model *mod = malloc(sizeof(*mod));
     if (!mod) {
         FAIL("Couldn't allocate memory for model");
