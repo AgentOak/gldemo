@@ -14,7 +14,7 @@ EXTERNALSDIR=externals
 EXE=gldemo
 DEPS=src/master.h src/window.h src/renderer.h src/model.h src/light.h src/input.h src/util.h include/glad/glad.h include/linmath.h include/tinyobj_loader_c.h
 OBJ=main.o window.o renderer.o model.o light.o input.o util.o glad.o tinyobj_loader_c.o
-SHADER=simple.vert simple.frag main.vert main.frag
+SHADER=main.vert main.frag
 
 # TODO: Release build option with LTO, -DNDEBUG, no debug info, stripped
 

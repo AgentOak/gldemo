@@ -89,4 +89,25 @@ string strprintf(const char *format, ...) FORMAT(1, 2) NONNULL(1);
  */
 string readFile(string fileName);
 
+/**
+ * Represents a memory mapping. See @c mapFile and @c unmapFile.
+ */
+typedef struct mapping {
+    size_t len;
+    const void *addr;
+} mapping;
+
+/**
+ * @brief Map a file into memory.
+ *
+ * Opens the file specified by the given @p fileName and maps it into memory.
+ *
+ * The returned memory region is read-only.
+ *
+ * The allocated memory region should be free'd using @c unmapFile.
+ */
+mapping mapFile(string fileName);
+
+void unmapFile(mapping map);
+
 #endif /* UTIL_H */
