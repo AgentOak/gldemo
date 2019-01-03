@@ -96,14 +96,18 @@ void setupRenderer() {
     li->ambient[0]  = 1.0; li->ambient[1]  = 1.0; li->ambient[2]  = 1.0;
     li->diffuse[0]  = 1.0; li->diffuse[1]  = 1.0; li->diffuse[2]  = 1.0;
     li->specular[0] = 1.0; li->specular[1] = 1.0; li->specular[2] = 1.0;
+    li->linearAttenuation = 0.01;
+    li->quadraticAttenuation = 0.04;
     addLight(li);
     freeLight(li);
 
     li = newLight();
     li->position[0] = 0.0; li->position[1] = 7.0; li->position[2] = 0.0;
-    li->ambient[0]  = 1.0; li->ambient[1]  = 1.0; li->ambient[2]  = 1.0;
-    li->diffuse[0]  = 1.0; li->diffuse[1]  = 1.0; li->diffuse[2]  = 1.0;
-    li->specular[0] = 1.0; li->specular[1] = 1.0; li->specular[2] = 1.0;
+    li->ambient[0]  = 0.0; li->ambient[1]  = 0.0; li->ambient[2]  = 1.0;
+    li->diffuse[0]  = 0.0; li->diffuse[1]  = 0.0; li->diffuse[2]  = 1.0;
+    li->specular[0] = 0.0; li->specular[1] = 0.0; li->specular[2] = 1.0;
+    li->linearAttenuation = 0.01;
+    li->quadraticAttenuation = 0.04;
     addLight(li);
     freeLight(li);
 }

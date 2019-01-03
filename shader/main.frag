@@ -11,6 +11,9 @@ uniform struct light_data {
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
+
+    float linearAttenuation;
+    float quadraticAttenuation;
 } lights[MAX_LIGHTS];
 
 uniform struct material_data {
@@ -32,7 +35,8 @@ void main() {
 
     vec3 maxLight = vec3(0.0);
     for (uint l = 0u; l < numLights; l++) {
-        vec3 dirToLight = normalize(lights[l].position - position);
+        vec3 posToLight = lights[l].position - position;
+        vec3 dirToLight = normalize(posToLight);
 
         // Ambient = k_a * L_a
         vec3 ambient = material.ambient * lights[l].ambient;
@@ -45,12 +49,17 @@ void main() {
         float alpha = max(0.0, dot(dirToCam, r));
         vec3 specular = material.specular * lights[l].specular * pow(alpha, material.shininess);
 
-        vec3 light = ambient + diffuse + specular;
+        // Attenuation
+        float lightDistance = length(posToLight);
+        float attenuation = (1.0 / (1.0 + lights[l].linearAttenuation * lightDistance
+                 + lights[l].quadraticAttenuation * pow(lightDistance, 2)));
+
+        vec3 light = ambient + attenuation * (diffuse + specular);
+
+        // "Choose" the brightest illumination
         maxLight.r = max(maxLight.r, light.r);
         maxLight.g = max(maxLight.g, light.g);
         maxLight.b = max(maxLight.b, light.b);
-
-        // TODO: Attenuation
     }
 
     // TODO: Gamma correction

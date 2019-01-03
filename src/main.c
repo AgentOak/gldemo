@@ -30,7 +30,7 @@ Parameters:\n\
 
 int main(int argc, char *argv[]) {
     // Construct options with defaults
-    app_options *newopts = malloc(sizeof(*opts));
+    app_options *newopts = malloc(sizeof(*newopts));
     if (!newopts) {
         FAIL("Could not allocate memory for options");
     }
