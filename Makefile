@@ -9,10 +9,11 @@ INC=-Iinclude
 SRCDIR=src
 SHADERDIR=shader
 BUILDDIR=build
+EXTERNALSDIR=externals
 
 EXE=gldemo
-DEPS=src/master.h src/window.h src/renderer.h src/model.h src/light.h src/input.h src/util.h include/glad/glad.h include/linmath.h
-OBJ=main.o window.o renderer.o model.o light.o input.o util.o glad.o
+DEPS=src/master.h src/window.h src/renderer.h src/model.h src/light.h src/input.h src/util.h include/glad/glad.h include/linmath.h include/tinyobj_loader_c.h
+OBJ=main.o window.o renderer.o model.o light.o input.o util.o glad.o tinyobj_loader_c.o
 SHADER=simple.vert simple.frag main.vert main.frag
 
 # TODO: Release build option with LTO, -DNDEBUG, no debug info, stripped
@@ -37,9 +38,12 @@ validateshaders: $(SHADER_PATH)
 $(EXE): $(OBJ_PATH)
 	$(CC) $(CFLAGS) $(LIB) -o $@ $^
 
-# Build GLAD using different flags
-$(BUILDDIR)/glad.o: $(SRCDIR)/glad.c include/glad/glad.h include/KHR/khrplatform.h | $(BUILDDIR)/
-	$(CC) -O3 -Wall -Wextra -std=c99 $(INC) -c -o $@ $<
+# Build dependencies using different flags
+$(BUILDDIR)/glad.o: $(EXTERNALSDIR)/glad.c include/glad/glad.h include/KHR/khrplatform.h | $(BUILDDIR)/
+	$(CC) -O3 -Wall -Wextra -Wformat=2 -std=c99 $(INC) -c -o $@ $<
+
+$(BUILDDIR)/tinyobj_loader_c.o: $(EXTERNALSDIR)/tinyobj_loader_c.c include/tinyobj_loader_c.h | $(BUILDDIR)/
+	$(CC) -O3 -Wall -Wextra -Wformat=2 -std=c99 $(INC) -c -o $@ $<
 
 # Build own source files
 $(BUILDDIR)/%.o: $(SRCDIR)/%.c $(DEPS) | $(BUILDDIR)/

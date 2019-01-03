@@ -6,6 +6,7 @@
 
 #include <glad/glad.h>
 #include <linmath.h>
+#include <tinyobj_loader_c.h>
 
 typedef struct vertex_data {
     float x, y, z;
