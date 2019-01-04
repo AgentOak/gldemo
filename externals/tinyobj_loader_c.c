@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include <errno.h>
 
 
 #define TINYOBJ_MAX_FACES_PER_F_LINE (16)
@@ -405,7 +406,6 @@ typedef struct hash_table_entry_t
   long value;
 
   struct hash_table_entry_t* next;
-  struct hash_table_entry_t* prev;
 } hash_table_entry_t;
 
 typedef struct
@@ -450,24 +450,14 @@ static int hash_table_insert_value(unsigned long hash, long value, hash_table_t*
   /* Insert value */
   size_t start_index = hash % hash_table->capacity;
   size_t index = start_index;
-  hash_table_entry_t* last_entry = NULL;
+  hash_table_entry_t* start_entry = hash_table->entries + start_index;
   size_t i;
   hash_table_entry_t* entry;
 
-  /*
-   * While there are collisions, keep probing and log the last entry touched
-   * If we reach an empty entry, append the entry to the last entry's linked list
-   * We form these lists to avoid doing the probing again, The linear search through
-   * the linked list is the length of numbers initially probed, so it's equivalent to
-   * doing the probing again.
-   */
-  for (i = 0; hash_table->entries[index].filled; i++)
+  for (i = 1; hash_table->entries[index].filled; i++)
   {
-    if (hash_table->entries[index].hash == hash)
-      break;
     if (i >= hash_table->capacity)
       return HASH_TABLE_ERROR;
-    last_entry = hash_table->entries + index;
     index = (start_index + (i * i)) % hash_table->capacity; 
   }
 
@@ -475,11 +465,11 @@ static int hash_table_insert_value(unsigned long hash, long value, hash_table_t*
   entry->hash = hash;
   entry->filled = 1;
   entry->value = value;
-  entry->next = NULL;
-  entry->prev = last_entry;
 
-  if (last_entry) {
-    last_entry->next = entry;
+  if (index != start_index) {
+    /* This is a new entry, but not the start entry, hence we need to add a next pointer to our entry */
+    entry->next = start_entry->next;
+    start_entry->next = entry;
   }
 
   return HASH_TABLE_SUCCESS;
@@ -570,30 +560,6 @@ static long hash_table_get(const char* name, hash_table_t* hash_table)
   return ret->value;
 }
 
-#if 0
-/* not used */
-static void hash_table_erase(const char* name, hash_table_t* hash_table)
-{
-  /* Find the entry associated with this name */
-  hash_table_entry_t* entry = hash_table_find(hash_djb2((const unsigned char*)name), hash_table);
-  if (!entry)
-    return;
-
-  /* Mark the entry as empty */
-  entry->filled = 0;
-
-  /* Remove it from the linked list if it's on one */
-  if (entry->prev)
-    entry->prev->next = entry->next;
-  if (entry->next)
-    entry->next->prev = entry->prev;
-
-  /* Delete the associated hash from the array by replacing it with the last hash on the table */
-  hash_table->n--;
-  hash_table->hashes[entry - hash_table->entries] = hash_table->hashes[hash_table->n];
-}
-#endif
-
 static tinyobj_material_t *tinyobj_material_add(tinyobj_material_t *prev,
                                                 size_t num_materials,
                                                 tinyobj_material_t *new_mat) {
@@ -629,6 +595,7 @@ static int tinyobj_parse_and_index_mtl_file(tinyobj_material_t **materials_out,
 
   fp = fopen(filename, "r");
   if (!fp) {
+    fprintf(stderr, "TINYOBJ: Error reading file '%s': %s (%d)\n", filename, strerror(errno), errno);
     return TINYOBJ_ERROR_FILE_OPERATION;
   }
 
@@ -1193,7 +1160,7 @@ int tinyobj_parse_obj(tinyobj_attrib_t *attrib, tinyobj_shape_t **shapes,
 
     if (ret != TINYOBJ_SUCCESS) {
       /* warning. */
-      fprintf(stderr, "TINYOBJ: Failed to parse .mtl file: %s\n", filename);
+      fprintf(stderr, "TINYOBJ: Failed to parse material file '%s': %d\n", filename, ret);
     }
 
     free(filename);
