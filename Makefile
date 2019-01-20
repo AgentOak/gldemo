@@ -2,7 +2,7 @@ CC=gcc
 #CC=clang
 
 UFLAGS=
-CFLAGS=-O2 -g -Wall -Wextra -Werror -Wformat=2 -Wno-error=unused-variable -Wno-error=unused-parameter -Wno-error=unused-function -std=c99 -pedantic $(UFLAGS)
+CFLAGS=-O2 -g -Wall -Wextra -Werror -Wshadow -Wno-conversion -Wformat=2 -Wno-error=unused-variable -Wno-error=unused-parameter -Wno-error=unused-function -Wno-error=shadow -std=c99 -pedantic $(UFLAGS)
 LIB=-lglfw -ldl -lm
 INC=-Iinclude
 
@@ -40,10 +40,10 @@ $(EXE): $(OBJ_PATH)
 
 # Build dependencies using different flags
 $(BUILDDIR)/glad.o: $(EXTERNALSDIR)/glad.c include/glad/glad.h include/KHR/khrplatform.h | $(BUILDDIR)/
-	$(CC) -O3 -Wall -Wextra -Wformat=2 -std=c89 $(INC) -c -o $@ $<
+	$(CC) -O3 -Wall -Wextra -Wshadow -Wconversion -Wformat=2 -std=c89 $(INC) -c -o $@ $<
 
 $(BUILDDIR)/tinyobj_loader_c.o: $(EXTERNALSDIR)/tinyobj_loader_c.c include/tinyobj_loader_c.h | $(BUILDDIR)/
-	$(CC) -O3 -Wall -Wextra -Wformat=2 -std=c89 $(INC) -c -o $@ $<
+	$(CC) -O3 -Wall -Wextra -Wshadow -Wconversion -Wformat=2 -std=c89 $(INC) -c -o $@ $<
 
 # Build own source files
 $(BUILDDIR)/%.o: $(SRCDIR)/%.c $(DEPS) | $(BUILDDIR)/

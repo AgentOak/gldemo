@@ -84,7 +84,7 @@ int main(int argc, char *argv[]) {
     INFO(GLDEMO_NAME);
 
     // Pass other arguments to the scene
-    newopts->argc = (uint32_t) argc - optind;
+    newopts->argc = (uint32_t) (argc - optind);
     newopts->argv = &argv[optind];
 
     opts = newopts;
