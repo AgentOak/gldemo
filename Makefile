@@ -1,8 +1,13 @@
-CC=gcc
-#CC=clang
-
 UFLAGS=
-CFLAGS=-O2 -g -Wall -Wextra -Werror -Wshadow -Wno-conversion -Wformat=2 -Wno-error=unused-variable -Wno-error=unused-parameter -Wno-error=unused-function -Wno-error=shadow -std=c99 -pedantic $(UFLAGS)
+
+CC=gcc
+WFLAGS=-Wall -Wextra -Wshadow -Wno-conversion -Wformat=2
+
+#CC=clang
+#WFLAGS=-Weverything -Wno-reserved-id-macro -Wno-conversion -Wno-double-promotion
+
+CFLAGS=-O2 -g -std=c99 -pedantic $(WFLAGS) $(UFLAGS)
+
 LIB=-lglfw -ldl -lm
 INC=-Iinclude
 

@@ -3,6 +3,6 @@
 
 #include "master.h"
 
-void window();
+void window(void);
 
 #endif /* WINDOW_H */

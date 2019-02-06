@@ -8,9 +8,9 @@
 #include <glad/glad.h>
 #include <linmath.h>
 
-GLuint programA;
-vbo *cube;
-GLint locationModel, locationView, locationProjection, locationCameraPosition, locationTime;
+static GLuint programA;
+static vbo *cube;
+static GLint locationModel, locationView, locationProjection, locationCameraPosition, locationTime;
 
 static mat4x4 identity = {
     { 1.0f, 0.0f, 0.0f, 0.0f },
@@ -22,7 +22,7 @@ static mat4x4 identity = {
 // TODO: textures
 
 static GLuint makeShader(GLenum shaderType, string fileName) {
-    NOTICE("Compiling shader '%s'", fileName.str);
+    INFO("Compiling shader '%s'", fileName.str);
 
     string shaderSource = readFile(fileName);
     if (!shaderSource.str) {

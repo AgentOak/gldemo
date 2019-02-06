@@ -40,8 +40,8 @@ vbo *uploadModel(model *mod);
 void freeModel(model *mod);
 
 void setVBO(vbo *object);
-void drawVBO();
-void resetVBO();
+void drawVBO(void);
+void resetVBO(void);
 void freeVBO(vbo *object);
 
 #endif /* MODEL_H */

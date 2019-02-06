@@ -18,10 +18,10 @@ typedef struct light_data {
 } light;
 
 void setupLight(GLuint program);
-light *newLight();
+light *newLight(void);
 void freeLight(light *li);
 
 void addLight(light *li);
-void resetLights();
+void resetLights(void);
 
 #endif /* LIGHT_H */

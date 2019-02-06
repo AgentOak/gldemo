@@ -32,7 +32,7 @@ static void onGLFWFramebufferSize(GLFWwindow *window UNUSED, int width, int heig
 void window() {
     /* GLFW - OpenGL Toolkit */
     NOTICE("Initializing GLFW");
-    INFO("GLFW version: %s", glfwGetVersionString());
+    NOTICE("GLFW version: %s", glfwGetVersionString());
     NOTICE("Compiled against GLFW version %d.%d.%d", GLFW_VERSION_MAJOR, GLFW_VERSION_MINOR, GLFW_VERSION_REVISION);
 
     glfwSetErrorCallback(onGLFWError);
