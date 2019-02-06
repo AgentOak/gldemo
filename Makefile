@@ -36,7 +36,7 @@ validateshaders: $(SHADER_PATH)
 
 # Link main executable
 $(EXE): $(OBJ_PATH)
-	$(CC) $(CFLAGS) $(LIB) -o $@ $^
+	$(CC) $(CFLAGS) -o $@ $^ $(LIB)
 
 # Build dependencies using different flags
 $(BUILDDIR)/glad.o: $(EXTERNALSDIR)/glad.c include/glad/glad.h include/KHR/khrplatform.h | $(BUILDDIR)/
