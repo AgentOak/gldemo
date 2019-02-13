@@ -1,6 +1,8 @@
 #include "renderer.h"
 
-#include "util.h"
+#include "util/math.h"
+#include "util/file.h"
+#include "util/print.h"
 #include "input.h"
 #include "model.h"
 #include "light.h"

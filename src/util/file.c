@@ -1,55 +1,28 @@
-#include "util.h"
+#include "file.h"
 
-#include <stdarg.h>
+#include <unistd.h>
+#include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
 #include <sys/mman.h>
-#include <fcntl.h>
-
-// TODO: Proper error handling
-
-string strprintf(const char *format, ...) {
-    va_list args, argsCopy;
-    va_start(args, format);
-    va_copy(argsCopy, args);
-
-    int length = vsnprintf(NULL, 0, format, args);
-    va_end(args);
-    if (length < 0) {
-        return NULLSTR;
-    }
-
-    char *buffer = malloc(length + 1);
-    if (!buffer) {
-        return NULLSTR;
-    }
-
-    if (vsprintf(buffer, format, argsCopy) < 0) {
-        return NULLSTR;
-    }
-    va_end(argsCopy);
-
-    return (string) { .len = length, .str = buffer };
-}
 
 string readFile(string fileName) {
     struct stat st;
     if (stat(fileName.str, &st)) {
-        return NULLSTR;
+        FAIL("Could not stat file '%s'", fileName.str);
     }
     off_t length = st.st_size;
 
-    char *buffer = malloc(length + 1);
-    if (!buffer) {
-        return NULLSTR;
-    }
+    char *buffer = safe_malloc(length + 1);
 
     if (length > 0) {
         FILE *f = fopen(fileName.str , "r");
-        if (!f || !fread(buffer, length, 1, f)) {
-            free(buffer);
-            return NULLSTR;
+        if (!f) {
+            FAIL("Could not open file '%s'", fileName.str);
+        }
+
+        if (!fread(buffer, length, 1, f)) {
+            FAIL("Could not read from file '%s'", fileName.str);
         }
         fclose(f);
     }

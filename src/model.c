@@ -80,27 +80,20 @@ void setupModel(GLuint program) {
     locationMaterialShininess = glGetUniformLocation(program, "material.shininess");
 }
 
-model *loadModel(string fileName UNUSED) {
+model *loadModel(string fileName ATTR_UNUSED) {
     // TODO: Add obj model loader
 
-    model *mod = malloc(sizeof(*mod));
-    if (!mod) {
-        FAIL("Couldn't allocate memory for model");
-    }
-
+    model *mod = safe_malloc(sizeof(*mod));
     mod->vertexCount = VERTICES_CUBE;
     mod->mat = materialCube;
-    mod->vertices = malloc(sizeof(vertex) * mod->vertexCount);
-    if (!mod->vertices) {
-        FAIL("Couldn't allocate memory for model vertices");
-    }
+    mod->vertices = safe_malloc(sizeof(vertex) * mod->vertexCount);
     memcpy(mod->vertices, &dataCube, sizeof(dataCube));
 
     return mod;
 }
 
 vbo *uploadModel(model *mod) {
-    vbo *object = malloc(sizeof(*object));
+    vbo *object = safe_malloc(sizeof(*object));
     object->vertexCount = mod->vertexCount;
     object->mat = mod->mat;
 
@@ -121,8 +114,8 @@ vbo *uploadModel(model *mod) {
 }
 
 void freeModel(model *mod) {
-    free(mod->vertices);
-    free(mod);
+    safe_free(mod->vertices);
+    safe_free(mod);
 }
 
 void setVBO(vbo *object) {
@@ -159,5 +152,5 @@ void resetVBO() {
 void freeVBO(vbo *object) {
     glDeleteBuffers(1, &object->bufferName);
 
-    free(object);
+    safe_free(object);
 }

@@ -1,5 +1,8 @@
 #include "light.h"
 
+#include "util/alloc.h"
+#include "util/print.h"
+
 #define MAX_LIGHTS 10
 
 static uint32_t numLights = 0;
@@ -34,12 +37,12 @@ void setupLight(GLuint program) {
 }
 
 light *newLight() {
-    light *li = calloc(1, sizeof(*li));
+    light *li = safe_calloc(1, sizeof(*li));
     return li;
 }
 
 void freeLight(light *li) {
-    free(li);
+    safe_free(li);
 }
 
 void addLight(light *li) {

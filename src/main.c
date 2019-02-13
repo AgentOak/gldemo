@@ -1,8 +1,13 @@
 #include "master.h"
 #include "window.h"
+#include "util/alloc.h"
+#include "util/print.h"
 
+#include <stdio.h>
+#include <stdlib.h>
 #include <getopt.h>
 
+bool verbose;
 const app_options *opts;
 
 static void printHelp(char *argv0) {
@@ -30,13 +35,9 @@ Parameters:\n\
 
 int main(int argc, char *argv[]) {
     // Construct options with defaults
-    app_options *newopts = malloc(sizeof(*newopts));
-    if (!newopts) {
-        FAIL("Could not allocate memory for options");
-    }
+    app_options *newopts = safe_malloc(sizeof(*newopts));
 
-    newopts->verbose = false;
-    newopts->debug = false;
+    newopts->debugContext = false;
     newopts->swapInterval = 1;
     newopts->frameLimit = 0;
     newopts->outputWidth = 1280;
@@ -53,10 +54,10 @@ int main(int argc, char *argv[]) {
                 printf(GLDEMO_NAME "\n");
                 return EXIT_SUCCESS;
             case 'v':
-                newopts->verbose = true;
+                verbose = true;
                 break;
             case 'D':
-                newopts->debug = true;
+                newopts->debugContext = true;
                 break;
             case 'r':
                 if (!sscanf(optarg, "%hux%hu", &newopts->outputWidth, &newopts->outputHeight)) {
@@ -95,6 +96,6 @@ int main(int argc, char *argv[]) {
 
     window();
 
-    free(newopts);
+    safe_free(newopts);
     return EXIT_SUCCESS;
 }

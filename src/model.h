@@ -2,7 +2,7 @@
 #define MODEL_H
 
 #include "master.h"
-#include "util.h"
+#include "util/string.h"
 
 #include <glad/glad.h>
 #include <linmath.h>

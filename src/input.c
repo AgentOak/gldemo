@@ -1,5 +1,7 @@
 #include "input.h"
 
+#include "util/math.h"
+
 #define MAX_VERTICAL_ANGLE DEG2RAD(89.99)
 #define MIN_VERTICAL_ANGLE DEG2RAD(-89.99)
 
@@ -28,7 +30,7 @@ static void releaseMouse() {
     }
 }
 
-static void onKey(GLFWwindow *w UNUSED, int key, int scancode UNUSED, int action, int mods UNUSED) {
+static void onKey(GLFWwindow *w ATTR_UNUSED, int key, int scancode ATTR_UNUSED, int action, int mods ATTR_UNUSED) {
     if (action == GLFW_PRESS) {
         if (key == GLFW_KEY_Q) {
             glfwSetWindowShouldClose(window, GLFW_TRUE);
@@ -38,7 +40,7 @@ static void onKey(GLFWwindow *w UNUSED, int key, int scancode UNUSED, int action
     }
 }
 
-static void onWindowFocus(GLFWwindow *w UNUSED, int focused) {
+static void onWindowFocus(GLFWwindow *w ATTR_UNUSED, int focused) {
     if (focused) {
         catchMouse();
     } else {
@@ -46,7 +48,7 @@ static void onWindowFocus(GLFWwindow *w UNUSED, int focused) {
     }
 }
 
-static void onMouseButton(GLFWwindow* w UNUSED, int button UNUSED, int action, int mods UNUSED) {
+static void onMouseButton(GLFWwindow* w ATTR_UNUSED, int button ATTR_UNUSED, int action, int mods ATTR_UNUSED) {
     if (action == GLFW_PRESS) {
         catchMouse();
     }
