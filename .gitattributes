@@ -1,0 +1,26 @@
+# default EOL behavior: use LF in repo, normalize (convert to native) during checkout
+* text=auto
+
+.gitignore text
+.gitattributes text
+
+# text files to be explicitly normalized
+*.c       text
+*.h       text
+*.cpp     text
+*.hpp     text
+*.hh      text
+
+# text files that will always have LF EOLs
+*.sh     text eol=lf
+Makefile text eol=lf
+
+# binary files
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+
+# not technically binary files but we they're not source code
+*.mtl   binary
+*.obj   binary

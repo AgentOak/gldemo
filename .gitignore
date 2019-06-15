@@ -1,25 +1,65 @@
-#######################################
-### General
-#######################################
+# General
 build/
-gldemo
 *.log
+*.zip
+*.gz
+*.bz2
+*.xz
+*.rar
+*.7z
+gldemo
 
+# C
+*.d
+*.o
+*.ko
+*.obj
+*.elf
+*.ilk
+*.map
+*.exp
+*.gch
+*.pch
+*.lib
+*.a
+*.la
+*.lo
+*.dll
+*.so
+*.so.*
+*.dylib
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+*.dSYM/
+*.su
+*.idb
+*.pdb
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
 
-#######################################
-### Systems
-#######################################
-### Windows
+# Windows
 Thumbs.db
 ehthumbs.db
-Desktop.ini
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
 $RECYCLE.BIN/
 *.lnk
 
-### Mac OS X
+# Mac OS X
 .DS_Store
 .AppleDouble
 .LSOverride
+Icon
 ._*
 .DocumentRevisions-V100
 .fseventsd
@@ -27,25 +67,22 @@ $RECYCLE.BIN/
 .TemporaryItems
 .Trashes
 .VolumeIcon.icns
+.com.apple.timemachine.donotpresent
 .AppleDB
 .AppleDesktop
 Network Trash Folder
 Temporary Items
 .apdisk
 
-### Linux
+# Linux
+*~
+.fuse_hidden*
 .directory
 .Trash-*
+.nfs*
 
-
-#######################################
-### IDEs/Editors
-#######################################
-### Eclipse
-*.pydevproject
+# Eclipse
 .metadata
-.gradle
-bin/
 *.tmp
 *.bak
 *.swp
@@ -53,43 +90,50 @@ bin/
 local.properties
 .settings/
 .loadpath
-.project
+.recommenders
 .externalToolBuilders/
 *.launch
+*.pydevproject
 .cproject
-.classpath
+.autotools
 .factorypath
 .buildpath
 .target
+.tern-project
 .texlipse
+.springBeans
+.recommenders/
+.apt_generated/
+.sts4-cache
+.project
+.classpath
 
-### NetBeans
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-nbactions.xml
-nb-configuration.xml
-.nb-gradle/
-
-### JetBrains
-*.iml
+# JetBrains
 .idea/
+cmake-build-*/
+*.iml
 *.ipr
 *.iws
-/out/
+out/
 .idea_modules/
 atlassian-ide-plugin.xml
+.idea/replstate.xml
 com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
+fabric.properties
+.idea/httpRequests
+.idea/caches/build_file_checksums.ser
 
-### Vim
-[._]*.s[a-w][a-z]
-[._]s[a-w][a-z]
-*.un~
+# Vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
 Session.vim
 .netrwhist
-*~
+[._]*.un~
 
+# VSCode
+.vscode/
