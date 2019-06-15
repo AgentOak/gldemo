@@ -13,4 +13,8 @@ static inline double clamp(double val, double min, double max) {
     return fmax(min, fmin(max, val));
 }
 
+static inline float clampf(float val, float min, float max) {
+    return fmaxf(min, fminf(max, val));
+}
+
 #endif /* UTIL_MATH_H */

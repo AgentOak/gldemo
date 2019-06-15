@@ -7,8 +7,6 @@
 
 #include <stdlib.h>
 
-// TODO: Move to functions + alloc.c?
-
 static inline void *safe_malloc(size_t length) /* TODO: ATTR_ALLOC */ {
     void *ptr = malloc(length);
 

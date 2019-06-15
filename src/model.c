@@ -1,5 +1,7 @@
 #include "model.h"
 
+#include <string.h>
+
 #define LOCATION_VPOSITION 0
 #define LOCATION_VCOLOR 1
 #define LOCATION_VNORMAL 2
@@ -103,7 +105,7 @@ vbo *uploadModel(model *mod) {
 
     glVertexAttribPointer(LOCATION_VPOSITION, 3, GL_FLOAT, GL_FALSE,
                           sizeof(float) * 9, (void*) (sizeof(float) * 0));
-    
+
     glVertexAttribPointer(LOCATION_VCOLOR, 3, GL_FLOAT, GL_FALSE,
                           sizeof(float) * 9, (void*) (sizeof(float) * 3));
 
