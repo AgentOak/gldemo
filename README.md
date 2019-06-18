@@ -1,10 +1,10 @@
 ## gldemo
 
-Basic OpenGL 3.3 application for educational purposes.
+Basic OpenGL 3.2 application for educational purposes.
 
 ### Requirements
 
-* OpenGL 3.3 core profile capable renderer
+* OpenGL 3.2 core profile capable renderer
     * (Mesa's llvmpipe software renderer works well)
 
 ### Build Dependencies

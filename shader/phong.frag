@@ -1,4 +1,4 @@
-#version 330 core
+#version 150 core
 
 // TODO: Somehow broken, both variants. sucks
 #define SPECULAR 0

@@ -44,10 +44,9 @@ void window() {
 
     atexit(glfwTerminate); // Don't care if this fails
 
-    // TODO: Use OpenGL 3.2 instead of 3.3
     NOTICE("Creating context");
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     if (opts->debugContext) {
@@ -72,8 +71,8 @@ void window() {
 
     INFO("OpenGL version: %s", glGetString(GL_VERSION));
     NOTICE("GLAD: OpenGL version %d.%d", GLVersion.major, GLVersion.minor);
-    if (!GLAD_GL_VERSION_3_3) {
-        WARN("The loaded OpenGL driver does not support OpenGL 3.3");
+    if (!GLAD_GL_VERSION_3_2) {
+        WARN("The loaded OpenGL driver does not support OpenGL 3.2");
     }
 
     NOTICE_GL_STRING(GL_VENDOR);
