@@ -5,6 +5,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+// TODO: Always include string.h, alloc.h and print.h
+
 #ifndef NDEBUG
     #include <assert.h>
 #else

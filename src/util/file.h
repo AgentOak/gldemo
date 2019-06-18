@@ -12,6 +12,8 @@
  *
  * Necessary memory is allocated and must be free'd using the @c FREESTR macro.
  *
+ * Operation may not fail, i.e. on errors the application is killed instead.
+ *
  * Reading an empty file will result in a string with @c (len == 0),
  * but a valid non-null @c str pointer (pointing directly to '\0').
  */

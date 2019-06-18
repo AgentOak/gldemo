@@ -2,7 +2,6 @@
 
 #include "print.h"
 
-#include <stdarg.h>
 #include <string.h>
 
 string wrapString(const char *str) {
@@ -29,19 +28,25 @@ string copyString(size_t length, const char *str) {
 }
 
 string printfString(const char *format, ...) {
-    va_list args, argsCopy;
+    va_list args;
     va_start(args, format);
+    string result = vprintfString(format, args);
+    va_end(args);
+    return result;
+}
+
+string vprintfString(const char *format, va_list args) {
+    va_list argsCopy;
     va_copy(argsCopy, args);
 
     int length = vsnprintf(NULL, 0, format, args);
-    va_end(args);
     if (length < 0) {
         FAIL("vsnprintf failed (length detection)");
     }
 
     char *buffer = safe_malloc(length + 1);
 
-    if (vsnprintf(buffer, length, format, argsCopy) < 0) {
+    if (vsnprintf(buffer, length + 1, format, argsCopy) < 0) {
         FAIL("vsnprintf failed (printf)");
     }
     va_end(argsCopy);

@@ -8,20 +8,17 @@
 
 typedef struct light_data {
     vec3 position;
-
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
-
-    float linearAttenuation;
-    float quadraticAttenuation;
+    vec3 attenuation;
+    vec3 intensity;
 } light;
 
 void setupLight(GLuint program);
-light *newLight(void);
-void freeLight(light *li);
+void setAmbientLight(vec3 intensity);
 
-void addLight(light *li);
+light *newLight(void);
+void freeLight(light *li) ATTR_NONNULL();
+
+void addLight(GLuint program, light *li) ATTR_NONNULL();
 void resetLights(void);
 
 #endif /* LIGHT_H */

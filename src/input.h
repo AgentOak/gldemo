@@ -11,7 +11,7 @@ extern float fieldOfView;
 extern vec3 cameraPosition;
 extern mat4x4 view;
 
-void setupInput(GLFWwindow* w);
+void setupInput(GLFWwindow* w) ATTR_NONNULL();
 void tick(double delta);
 
 #endif /* INPUT_H */

@@ -5,6 +5,8 @@
 
 #include <math.h>
 
+// TODO: Replace linmath.h, get rid of our own defines as possible
+
 #define PI 3.14159265358979323846
 #define DEG2RAD(degrees) ((PI / 180.0) * (degrees))
 #define RAD2DEG(radians) ((180.0 / PI) * (radians))

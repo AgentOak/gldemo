@@ -36,12 +36,12 @@ typedef struct vbo_data {
 
 void setupModel(GLuint program);
 model *loadModel(string fileName);
-vbo *uploadModel(model *mod);
-void freeModel(model *mod);
+vbo *uploadModel(model *mod) ATTR_NONNULL();
+void freeModel(model *mod) ATTR_NONNULL();
 
-void setVBO(vbo *object);
+void setVBO(vbo *object) ATTR_NONNULL();
 void drawVBO(void);
 void resetVBO(void);
-void freeVBO(vbo *object);
+void freeVBO(vbo *object) ATTR_NONNULL();
 
 #endif /* MODEL_H */

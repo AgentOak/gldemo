@@ -1,5 +1,7 @@
 #include "model.h"
 
+#include "glutil/shader.h"
+
 #include <string.h>
 
 #define LOCATION_VPOSITION 0
@@ -8,65 +10,65 @@
 
 #define VERTICES_CUBE 36
 static const material materialCube = {
-    .ambient = { 0.1, 0.1, 0.1 },
+    .ambient = { 0.2, 0.2, 0.2 },
     .diffuse = { 0.5, 0.5, 0.5 },
     .specular = { 0.8, 0.8, 0.8 },
     .shininess = 6.0
 };
 static const vertex dataCube[VERTICES_CUBE] = {
     // Front
-    { -1.0f, -1.0f,  1.0f, 1.0f, 0.0f, 0.0f,  0.0f,  0.0f,  1.0f },
-    {  1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f,  0.0f,  0.0f,  1.0f },
-    { -1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f,  0.0f,  0.0f,  1.0f },
+    { -1.0f, -1.0f,  1.0f, 1.0f, 1.0f, 1.0f,  0.0f,  0.0f,  1.0f },
+    {  1.0f, -1.0f,  1.0f, 1.0f, 1.0f, 1.0f,  0.0f,  0.0f,  1.0f },
+    { -1.0f,  1.0f,  1.0f, 1.0f, 1.0f, 1.0f,  0.0f,  0.0f,  1.0f },
 
-    {  1.0f,  1.0f,  1.0f, 1.0f, 0.0f, 0.0f,  0.0f,  0.0f,  1.0f },
-    {  1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f,  0.0f,  0.0f,  1.0f },
-    { -1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f,  0.0f,  0.0f,  1.0f },
+    {  1.0f,  1.0f,  1.0f, 1.0f, 1.0f, 1.0f,  0.0f,  0.0f,  1.0f },
+    {  1.0f, -1.0f,  1.0f, 1.0f, 1.0f, 1.0f,  0.0f,  0.0f,  1.0f },
+    { -1.0f,  1.0f,  1.0f, 1.0f, 1.0f, 1.0f,  0.0f,  0.0f,  1.0f },
 
     // Back
-    { -1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 0.0f,  0.0f,  0.0f, -1.0f },
-    {  1.0f, -1.0f, -1.0f, 0.0f, 1.0f, 0.0f,  0.0f,  0.0f, -1.0f },
-    { -1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 1.0f,  0.0f,  0.0f, -1.0f },
+    { -1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f,  0.0f,  0.0f, -1.0f },
+    {  1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f,  0.0f,  0.0f, -1.0f },
+    { -1.0f,  1.0f, -1.0f, 1.0f, 1.0f, 1.0f,  0.0f,  0.0f, -1.0f },
 
-    {  1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f,  0.0f,  0.0f, -1.0f },
-    {  1.0f, -1.0f, -1.0f, 0.0f, 1.0f, 0.0f,  0.0f,  0.0f, -1.0f },
-    { -1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 1.0f,  0.0f,  0.0f, -1.0f },
+    {  1.0f,  1.0f, -1.0f, 1.0f, 1.0f, 1.0f,  0.0f,  0.0f, -1.0f },
+    {  1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f,  0.0f,  0.0f, -1.0f },
+    { -1.0f,  1.0f, -1.0f, 1.0f, 1.0f, 1.0f,  0.0f,  0.0f, -1.0f },
 
     // Left
-    { -1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f, -1.0f,  0.0f,  0.0f },
-    { -1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f, -1.0f,  0.0f,  0.0f },
-    { -1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f, -1.0f,  0.0f,  0.0f },
+    { -1.0f,  1.0f, -1.0f, 1.0f, 1.0f, 1.0f, -1.0f,  0.0f,  0.0f },
+    { -1.0f, -1.0f,  1.0f, 1.0f, 1.0f, 1.0f, -1.0f,  0.0f,  0.0f },
+    { -1.0f,  1.0f,  1.0f, 1.0f, 1.0f, 1.0f, -1.0f,  0.0f,  0.0f },
 
-    { -1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f, -1.0f,  0.0f,  0.0f },
-    { -1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f, -1.0f,  0.0f,  0.0f },
-    { -1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 1.0f, -1.0f,  0.0f,  0.0f },
+    { -1.0f,  1.0f, -1.0f, 1.0f, 1.0f, 1.0f, -1.0f,  0.0f,  0.0f },
+    { -1.0f, -1.0f,  1.0f, 1.0f, 1.0f, 1.0f, -1.0f,  0.0f,  0.0f },
+    { -1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f, -1.0f,  0.0f,  0.0f },
 
     // Right
-    {  1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f,  1.0f,  0.0f,  0.0f },
-    {  1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f,  1.0f,  0.0f,  0.0f },
-    {  1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f,  1.0f,  0.0f,  0.0f },
+    {  1.0f,  1.0f, -1.0f, 1.0f, 1.0f, 1.0f,  1.0f,  0.0f,  0.0f },
+    {  1.0f, -1.0f,  1.0f, 1.0f, 1.0f, 1.0f,  1.0f,  0.0f,  0.0f },
+    {  1.0f,  1.0f,  1.0f, 1.0f, 1.0f, 1.0f,  1.0f,  0.0f,  0.0f },
 
-    {  1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f,  1.0f,  0.0f,  0.0f },
-    {  1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f,  1.0f,  0.0f,  0.0f },
-    {  1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 1.0f,  1.0f,  0.0f,  0.0f },
+    {  1.0f,  1.0f, -1.0f, 1.0f, 1.0f, 1.0f,  1.0f,  0.0f,  0.0f },
+    {  1.0f, -1.0f,  1.0f, 1.0f, 1.0f, 1.0f,  1.0f,  0.0f,  0.0f },
+    {  1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f,  1.0f,  0.0f,  0.0f },
 
     // Top
-    { -1.0f,  1.0f,  1.0f, 1.0f, 0.0f, 0.0f,  0.0f,  1.0f,  0.0f },
-    {  1.0f,  1.0f,  1.0f, 0.0f, 1.0f, 0.0f,  0.0f,  1.0f,  0.0f },
-    {  1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 1.0f,  0.0f,  1.0f,  0.0f },
+    { -1.0f,  1.0f,  1.0f, 1.0f, 1.0f, 1.0f,  0.0f,  1.0f,  0.0f },
+    {  1.0f,  1.0f,  1.0f, 1.0f, 1.0f, 1.0f,  0.0f,  1.0f,  0.0f },
+    {  1.0f,  1.0f, -1.0f, 1.0f, 1.0f, 1.0f,  0.0f,  1.0f,  0.0f },
 
-    { -1.0f,  1.0f,  1.0f, 1.0f, 0.0f, 0.0f,  0.0f,  1.0f,  0.0f },
-    { -1.0f,  1.0f, -1.0f, 0.0f, 1.0f, 0.0f,  0.0f,  1.0f,  0.0f },
-    {  1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 1.0f,  0.0f,  1.0f,  0.0f },
+    { -1.0f,  1.0f,  1.0f, 1.0f, 1.0f, 1.0f,  0.0f,  1.0f,  0.0f },
+    { -1.0f,  1.0f, -1.0f, 1.0f, 1.0f, 1.0f,  0.0f,  1.0f,  0.0f },
+    {  1.0f,  1.0f, -1.0f, 1.0f, 1.0f, 1.0f,  0.0f,  1.0f,  0.0f },
 
     // Bottom
-    { -1.0f, -1.0f,  1.0f, 1.0f, 0.0f, 0.0f,  0.0f, -1.0f,  0.0f },
-    {  1.0f, -1.0f,  1.0f, 0.0f, 1.0f, 0.0f,  0.0f, -1.0f,  0.0f },
-    {  1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 1.0f,  0.0f, -1.0f,  0.0f },
+    { -1.0f, -1.0f,  1.0f, 1.0f, 1.0f, 1.0f,  0.0f, -1.0f,  0.0f },
+    {  1.0f, -1.0f,  1.0f, 1.0f, 1.0f, 1.0f,  0.0f, -1.0f,  0.0f },
+    {  1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f,  0.0f, -1.0f,  0.0f },
 
-    { -1.0f, -1.0f,  1.0f, 1.0f, 0.0f, 0.0f,  0.0f, -1.0f,  0.0f },
-    { -1.0f, -1.0f, -1.0f, 0.0f, 1.0f, 0.0f,  0.0f, -1.0f,  0.0f },
-    {  1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 1.0f,  0.0f, -1.0f,  0.0f }
+    { -1.0f, -1.0f,  1.0f, 1.0f, 1.0f, 1.0f,  0.0f, -1.0f,  0.0f },
+    { -1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f,  0.0f, -1.0f,  0.0f },
+    {  1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f,  0.0f, -1.0f,  0.0f }
 };
 
 static vbo *currentObject = NULL;
@@ -76,10 +78,10 @@ static GLint locationMaterialSpecular;
 static GLint locationMaterialShininess;
 
 void setupModel(GLuint program) {
-    locationMaterialAmbient = glGetUniformLocation(program, "material.ambient");
-    locationMaterialDiffuse = glGetUniformLocation(program, "material.diffuse");
-    locationMaterialSpecular = glGetUniformLocation(program, "material.specular");
-    locationMaterialShininess = glGetUniformLocation(program, "material.shininess");
+    locationMaterialAmbient = getUniformLocation(program, "material.ambient");
+    locationMaterialDiffuse = getUniformLocation(program, "material.diffuse");
+    locationMaterialSpecular = getUniformLocation(program, "material.specular");
+    locationMaterialShininess = getUniformLocation(program, "material.shininess");
 }
 
 model *loadModel(string fileName ATTR_UNUSED) {
@@ -152,6 +154,8 @@ void resetVBO() {
 }
 
 void freeVBO(vbo *object) {
+    assert(currentObject != object);
+
     glDeleteBuffers(1, &object->bufferName);
 
     safe_free(object);

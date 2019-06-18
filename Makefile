@@ -2,7 +2,7 @@
 # Compiler
 #
 CC = clang
-WFLAGS = -Weverything -Wno-reserved-id-macro -Wno-conversion -Wno-double-promotion -Wno-padded
+WFLAGS = -Weverything -Wno-reserved-id-macro -Wno-conversion -Wno-double-promotion -Wno-format-nonliteral -Wno-padded -Wno-cast-qual
 #CC = gcc
 #WFLAGS = -Wall -Wextra -Wshadow -Wformat=2
 
@@ -35,10 +35,13 @@ OBJS_SRC = main.o window.o renderer.o model.o light.o input.o
 DEPS_SRC += util/alloc.h util/file.h util/math.h util/print.h util/string.h
 OBJS_SRC += util/file.o util/string.o
 
+DEPS_SRC += glutil/shader.h
+OBJS_SRC += glutil/shader.o
+
 DEPS_EXT = glad/glad.h linmath.h tinyobj_loader_c.h
 OBJS_EXT = glad.o tinyobj_loader_c.o
 
-SHADERS  = main.vert main.frag
+SHADERS  = project.vert phong.frag
 
 ###############################################################################
 
@@ -77,6 +80,10 @@ $(EXE): $(OBJS_SRC_PATH) $(OBJS_EXT_PATH)
 #
 # Compile
 #
+$(BUILDDIR)/$(EXTDIR)/glad.o: $(EXTDIR)/glad.c $(DEPS_EXT_PATH)
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -Wno-pedantic $(INC) -c -o $@ $<
+
 $(BUILDDIR)/$(EXTDIR)/%.o: $(EXTDIR)/%.c $(DEPS_EXT_PATH)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<

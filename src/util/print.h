@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-// TODO: Change into functions and move to print.c?
+// TODO: Change into functions and move to print.c
 
 /*
  * Print macros

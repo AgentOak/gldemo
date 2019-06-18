@@ -1,12 +1,12 @@
 #include "window.h"
 
-#include "renderer.h"
-#include "input.h"
-#include "util/print.h"
-
 #define GLFW_INCLUDE_NONE
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
+#include "renderer.h"
+#include "input.h"
+#include "util/print.h"
 
 #define NOTICE_GL_STRING(name) \
     NOTICE(#name ": %s", glGetString(name));

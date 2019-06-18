@@ -1,4 +1,5 @@
 #include "master.h"
+
 #include "window.h"
 #include "util/alloc.h"
 #include "util/print.h"
