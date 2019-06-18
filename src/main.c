@@ -14,7 +14,7 @@ const app_options *opts;
 static void printHelp(char *argv0) {
     printf(GLDEMO_NAME "\n\
 \n\
-Usage: %s [-s <0-2>] [-l <n>] [-r <width>x<height>] [-v] [-D] [-h] [<additional argument>*]\n\
+Usage: %s [-s <0-2>] [-l <n>] [-r <width>x<height>] [-m <f>] [-v] [-D] [-h] [<additional argument>*]\n\
 \n\
 Parameters:\n\
     -s n: Set swap interval to n frames\n\
@@ -25,6 +25,7 @@ Parameters:\n\
         0 disables frame limit (default)\n\
         n outputs a frame at most every 1/n seconds\n\
     -r <width>x<height>: Set output resolution\n\
+    -m <sensitivity>: Set mouse sensitivity. Default: 1.5\n\
     -v: Increase verbosity (print additional information)\n\
     -D: Create an OpenGL debug context\n\
         Depending on the driver, this might enable additional messages\n\
@@ -43,9 +44,10 @@ int main(int argc, char *argv[]) {
     newopts->frameLimit = 0;
     newopts->outputWidth = 1280;
     newopts->outputHeight = 720;
+    newopts->mouseSensitivity = 1.5f;
 
     int opt;
-    while ((opt = getopt(argc, argv, "hHVvDr:s:l:")) != -1) {
+    while ((opt = getopt(argc, argv, "hHVvDr:m:s:l:")) != -1) {
         switch (opt) {
             case 'h':
             case 'H':
@@ -73,6 +75,11 @@ int main(int argc, char *argv[]) {
             case 'l':
                 if (!sscanf(optarg, "%hu", &newopts->frameLimit)) {
                     FAIL("Illegal argument for -l");
+                }
+                break;
+            case 'm':
+                if (!sscanf(optarg, "%f", &newopts->mouseSensitivity)) {
+                    FAIL("Illegal argument for -m");
                 }
                 break;
             case '?':

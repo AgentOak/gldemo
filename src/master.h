@@ -25,6 +25,8 @@ typedef struct {
     uint16_t outputWidth;
     uint16_t outputHeight;
 
+    float mouseSensitivity;
+
     uint32_t argc;
     char **argv;
 } app_options;

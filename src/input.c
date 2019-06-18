@@ -33,6 +33,7 @@ static void releaseMouse() {
 static void onKey(GLFWwindow *w ATTR_UNUSED, int key, int scancode ATTR_UNUSED, int action, int mods ATTR_UNUSED) {
     if (action == GLFW_PRESS) {
         if (key == GLFW_KEY_Q) {
+            releaseMouse();
             glfwSetWindowShouldClose(window, GLFW_TRUE);
         } else if (key == GLFW_KEY_ESCAPE) {
             releaseMouse();
@@ -48,7 +49,7 @@ static void onWindowFocus(GLFWwindow *w ATTR_UNUSED, int focused) {
     }
 }
 
-static void onMouseButton(GLFWwindow* w ATTR_UNUSED, int button ATTR_UNUSED, int action, int mods ATTR_UNUSED) {
+static void onMouseButton(GLFWwindow *w ATTR_UNUSED, int button ATTR_UNUSED, int action, int mods ATTR_UNUSED) {
     if (action == GLFW_PRESS) {
         catchMouse();
     }
@@ -69,15 +70,14 @@ void setupInput(GLFWwindow *w) {
 
 void tick(double delta) {
     double movSpeed = 12.0;
-    double mouseSpeed = 0.002;
 
     if (mouseActive) {
         double mouseX, mouseY;
         glfwGetCursorPos(window, &mouseX, &mouseY);
         mouseY = -mouseY; // Convert window coordinates to OpenGL coordinates
 
-        horizontalAngle += mouseSpeed * (lastX - mouseX);
-        verticalAngle += mouseSpeed * (lastY - mouseY);
+        horizontalAngle += opts->mouseSensitivity * 0.001f * (lastX - mouseX);
+        verticalAngle += opts->mouseSensitivity * 0.001f * (lastY - mouseY);
 
         horizontalAngle = remainder(horizontalAngle, DEG2RAD(360.0));
         verticalAngle = clamp(verticalAngle, MIN_VERTICAL_ANGLE, MAX_VERTICAL_ANGLE);
