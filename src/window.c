@@ -4,7 +4,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "renderer.h"
+#include "renderer/renderer.h"
 #include "input.h"
 #include "util/print.h"
 
@@ -44,6 +44,7 @@ void window() {
 
     atexit(glfwTerminate); // Don't care if this fails
 
+    // TODO: Use OpenGL 3.2 instead of 3.3
     NOTICE("Creating context");
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -55,7 +56,7 @@ void window() {
     }
     glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // Initially hidden before scene is loaded
 
-    // TODO: Fullscreen/Window/Monitor options support
+    // TODO: Fullscreen/Window/Monitor options support + hotkeys
     GLFWwindow *window = glfwCreateWindow(opts->outputWidth, opts->outputHeight, GLDEMO_NAME, NULL, NULL);
     if (!window)  {
         FAIL("Window creation failure");

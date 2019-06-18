@@ -1,7 +1,7 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-#include "master.h"
+#include "../master.h"
 
 void setupRenderer(void);
 void onViewport(int width, int height);

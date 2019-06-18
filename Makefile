@@ -29,14 +29,15 @@ INC = -I$(INCDIR)
 #
 # Source files
 #
-DEPS_SRC = master.h window.h renderer.h model.h light.h input.h
-OBJS_SRC = main.o window.o renderer.o model.o light.o input.o
+DEPS_SRC = master.h window.h input.h
+OBJS_SRC = main.o window.o input.o
 
 DEPS_SRC += util/alloc.h util/file.h util/math.h util/print.h util/string.h
 OBJS_SRC += util/file.o util/string.o
 
-DEPS_SRC += glutil/shader.h
-OBJS_SRC += glutil/shader.o
+# TODO: Build renderer as own "module", nothing should have dependencies to headers other than renderer.h
+DEPS_SRC += renderer/renderer.h renderer/model.h renderer/light.h renderer/shader.h
+OBJS_SRC += renderer/renderer.o renderer/model.o renderer/light.o renderer/shader.o
 
 DEPS_EXT = glad/glad.h linmath.h tinyobj_loader_c.h
 OBJS_EXT = glad.o tinyobj_loader_c.o

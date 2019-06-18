@@ -1,9 +1,9 @@
 #include "renderer.h"
 
-#include "util/math.h"
-#include "util/print.h"
-#include "glutil/shader.h"
-#include "input.h"
+#include "../util/math.h"
+#include "../util/print.h"
+#include "../input.h"
+#include "shader.h"
 #include "model.h"
 #include "light.h"
 

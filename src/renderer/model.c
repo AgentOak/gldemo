@@ -1,6 +1,6 @@
 #include "model.h"
 
-#include "glutil/shader.h"
+#include "shader.h"
 
 #include <string.h>
 

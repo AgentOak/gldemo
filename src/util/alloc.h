@@ -7,7 +7,7 @@
 
 #include <stdlib.h>
 
-static inline void *safe_malloc(size_t length) /* TODO: ATTR_ALLOC */ {
+ATTR_ALLOC static inline void *safe_malloc(size_t length) {
     void *ptr = malloc(length);
 
     if (!ptr) {
@@ -27,7 +27,7 @@ static inline void *safe_realloc(void *ptr, size_t length) {
     return newptr;
 }
 
-static inline void *safe_calloc(size_t num, size_t length) /* TODO: ATTR_ALLOC */ {
+ATTR_ALLOC static inline void *safe_calloc(size_t num, size_t length) {
     void *ptr = calloc(num, length);
 
     if (!ptr) {

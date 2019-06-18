@@ -1,7 +1,7 @@
 #ifndef LIGHT_H
 #define LIGHT_H
 
-#include "master.h"
+#include "../master.h"
 
 #include <glad/glad.h>
 #include <linmath.h>
