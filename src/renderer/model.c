@@ -11,8 +11,8 @@
 #define VERTICES_CUBE 36
 static const material materialCube = {
     .ambient = { 0.2, 0.2, 0.2 },
-    .diffuse = { 0.5, 0.5, 0.5 },
-    .specular = { 0.8, 0.8, 0.8 },
+    .diffuse = { 0.3, 0.4, 0.6 },
+    .specular = { 0.5, 0.6, 0.8 },
     .shininess = 6.0
 };
 static const vertex dataCube[VERTICES_CUBE] = {

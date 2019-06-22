@@ -6,6 +6,10 @@
 #define BLINN_PHONG 0
 #define BLINN_PHONG_FACTOR 4.0
 
+#define GAMMA 2.2
+
+// End of options
+
 #define MAX_LIGHTS 10
 
 uniform vec3 cameraPosition;
@@ -73,7 +77,8 @@ void main() {
 
     // TODO: Directional lights
 
-    // TODO: Gamma correction
-    // TODO: logarithmic above 1.0
-    fragColor = vec4(min(illum, 1.0) * color.rgb, color.a);
+    // Gamma correction
+    // TODO: logarithmic above 1.0 (oversaturation/blinding)
+    vec3 correctedColor = pow(min(illum, 1.0) * color.rgb, vec3(1.0 / GAMMA));
+    fragColor = vec4(correctedColor, color.a);
 }

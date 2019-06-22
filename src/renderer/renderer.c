@@ -62,7 +62,7 @@ void setupRenderer() {
     freeModel(cubeModel);
 
     // Light source
-    vec3 ambient = { 0.3, 0.3, 0.3 };
+    vec3 ambient = { 0.1, 0.1, 0.1 };
     setAmbientLight(ambient);
 
     light *li = newLight();
