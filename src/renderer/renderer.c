@@ -1,7 +1,6 @@
 #include "renderer.h"
 
 #include "../util/math.h"
-#include "../util/print.h"
 #include "../input.h"
 #include "shader.h"
 #include "model.h"

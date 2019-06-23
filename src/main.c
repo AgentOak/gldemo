@@ -1,11 +1,8 @@
 #include "master.h"
 
 #include "window.h"
-#include "util/alloc.h"
-#include "util/print.h"
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <getopt.h>
 
 bool verbose;

@@ -32,7 +32,7 @@ INC = -I$(INCDIR)
 DEPS_SRC = master.h window.h input.h
 OBJS_SRC = main.o window.o input.o
 
-DEPS_SRC += util/alloc.h util/file.h util/math.h util/print.h util/string.h
+DEPS_SRC += util/file.h util/string.h util/math.h
 OBJS_SRC += util/file.o util/string.o
 
 # TODO: Build renderer as own "module", nothing should have dependencies to headers other than renderer.h

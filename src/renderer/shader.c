@@ -1,7 +1,6 @@
 #include "shader.h"
 
 #include "../util/file.h"
-#include "../util/print.h"
 
 GLuint makeShader(GLenum shaderType, string fileName) {
     INFO("Compiling shader '%s'", fileName.str);

@@ -5,8 +5,6 @@
 
 #include <stdarg.h>
 
-#include "alloc.h"
-
 /**
  * Poor man's immutable string library.
  *

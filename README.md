@@ -16,7 +16,7 @@ Basic OpenGL 3.2 application for educational purposes.
 
 ### Building
 
-Note: Run `make clean` before switching between debug/release
+Note: Run `make clean` before switching between debug/release and gcc/clang
 
 Make debug build:
 

@@ -6,7 +6,6 @@
 
 #include "renderer/renderer.h"
 #include "input.h"
-#include "util/print.h"
 
 #define NOTICE_GL_STRING(name) \
     NOTICE(#name ": %s", glGetString(name));

@@ -1,11 +1,12 @@
 #ifndef MASTER_H
 #define MASTER_H
 
-#include <stddef.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include <stdint.h>
 
-// TODO: Always include string.h, alloc.h and print.h
+// TODO: Create print functions in print.h+print.c, remove <stdio.h> include
+#include <stdio.h>
 
 #ifndef NDEBUG
     #include <assert.h>
@@ -33,6 +34,35 @@ typedef struct {
 
 extern bool verbose;
 extern const app_options *opts;
+
+/*
+ * Logging/Output macros
+ */
+#define NOTICE(...) \
+    if (verbose) {\
+        printf("[NOTICE] ");\
+        printf(__VA_ARGS__);\
+        printf("\n");\
+    }
+
+#define INFO(...) \
+    printf("[ INFO ] ");\
+    printf(__VA_ARGS__);\
+    printf("\n");
+
+#define WARN(...) \
+    fprintf(stderr, "[ WARN ] ");\
+    fprintf(stderr, __VA_ARGS__);\
+    fprintf(stderr, "\n");
+
+#define ERROR(...) \
+    fprintf(stderr, "[ ERROR] ");\
+    fprintf(stderr, __VA_ARGS__);\
+    fprintf(stderr, "\n");
+
+#define FAIL(...) \
+    ERROR(__VA_ARGS__);\
+    exit(EXIT_FAILURE);
 
 /*
  * Attributes
@@ -78,5 +108,46 @@ extern const app_options *opts;
 #else
     #define ATTR_ALLOC
 #endif
+
+/*
+ * Allocation functions
+ */
+ATTR_ALLOC static inline void *safe_malloc(size_t length) {
+    void *ptr = malloc(length);
+
+    if (!ptr) {
+        FAIL("malloc of %lu bytes failed", length);
+    }
+
+    return ptr;
+}
+
+static inline void *safe_realloc(void *ptr, size_t length) {
+    void *newptr = realloc(ptr, length);
+
+    if (!newptr) {
+        FAIL("realloc %p of %lu bytes failed", ptr, length);
+    }
+
+    return newptr;
+}
+
+ATTR_ALLOC static inline void *safe_calloc(size_t num, size_t length) {
+    void *ptr = calloc(num, length);
+
+    if (!ptr) {
+        FAIL("calloc of %lux%lu bytes failed", num, length);
+    }
+
+    return ptr;
+}
+
+static inline void safe_free(void *ptr) {
+    if (!ptr) {
+        WARN("freeing null pointer");
+    }
+
+    free(ptr);
+}
 
 #endif /* MASTER_H */

@@ -1,7 +1,5 @@
 #include "light.h"
 
-#include "../util/alloc.h"
-#include "../util/print.h"
 #include "shader.h"
 
 #define MAX_LIGHTS 10
