@@ -16,7 +16,7 @@ static double lastX = 0.0, lastY = 0.0;
 static GLFWwindow *window;
 
 static void catchMouse() {
-    if (!mouseActive && glfwGetWindowAttrib(window, GLFW_FOCUSED)) {
+    if (glfwGetWindowAttrib(window, GLFW_FOCUSED)) {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         glfwSetCursorPos(window, lastX, lastY);
         mouseActive = true;
@@ -24,10 +24,8 @@ static void catchMouse() {
 }
 
 static void releaseMouse() {
-    if (mouseActive) {
-        mouseActive = false;
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-    }
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    mouseActive = false;
 }
 
 static void onKey(GLFWwindow *w ATTR_UNUSED, int key, int scancode ATTR_UNUSED, int action, int mods ATTR_UNUSED) {
@@ -42,7 +40,7 @@ static void onKey(GLFWwindow *w ATTR_UNUSED, int key, int scancode ATTR_UNUSED, 
 }
 
 static void onWindowFocus(GLFWwindow *w ATTR_UNUSED, int focused) {
-    if (focused) {
+    if (focused && !mouseActive) {
         catchMouse();
     } else {
         releaseMouse();
@@ -50,7 +48,7 @@ static void onWindowFocus(GLFWwindow *w ATTR_UNUSED, int focused) {
 }
 
 static void onMouseButton(GLFWwindow *w ATTR_UNUSED, int button ATTR_UNUSED, int action, int mods ATTR_UNUSED) {
-    if (action == GLFW_PRESS) {
+    if (action == GLFW_PRESS && !mouseActive) {
         catchMouse();
     }
 }
@@ -76,6 +74,7 @@ void tick(double delta) {
         glfwGetCursorPos(window, &mouseX, &mouseY);
         mouseY = -mouseY; // Convert window coordinates to OpenGL coordinates
 
+        // TODO: Divide by window size in pixels instead / different sens for X/Y?
         horizontalAngle += opts->mouseSensitivity * 0.001f * (lastX - mouseX);
         verticalAngle += opts->mouseSensitivity * 0.001f * (lastY - mouseY);
 
