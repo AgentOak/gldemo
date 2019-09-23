@@ -2,7 +2,7 @@
 # Compiler
 #
 CC = clang
-WFLAGS = -Weverything -Wno-reserved-id-macro -Wno-conversion -Wno-double-promotion -Wno-format-nonliteral -Wno-padded -Wno-cast-qual
+WFLAGS = -Weverything -Wno-reserved-id-macro -Wno-conversion -Wno-double-promotion -Wno-format-nonliteral -Wno-padded -Wno-cast-qual -Wno-extra-semi-stmt
 #CC = gcc
 #WFLAGS = -Wall -Wextra -Wshadow -Wformat=2
 
