@@ -125,25 +125,29 @@ void window() {
     setupRenderer();
     onViewport(opts->outputWidth, opts->outputHeight);
 
-    // Display window late
+    // Timing
     glfwSwapInterval(opts->swapInterval);
-    glfwShowWindow(window);
     glfwSetTime(0.0);
+
+    // Render first frame, display window late
+    render(0.0);
+    glfwShowWindow(window);
+    glfwSwapBuffers(window);
 
     /* Main loop */
     INFO("Entering main loop");
     double lastTime = 0.0;
     while (!glfwWindowShouldClose(window)) {
+        glfwPollEvents();
+
         double currTime = glfwGetTime();
         // TODO: Properly decouple ticks from render calls & arbitrary frame limit, get execution order right
         tick(currTime - lastTime);
 
         render(currTime);
+
         glfwSwapBuffers(window);
-
         lastTime = currTime;
-
-        glfwPollEvents();
     }
 
     INFO("Terminating");
