@@ -25,7 +25,6 @@ static void GLAPIENTRY onGLError(GLenum source, GLenum type, GLuint id,
 
 static void onGLFWFramebufferSize(GLFWwindow *window ATTR_UNUSED, int width, int height) {
     glViewport(0, 0, width, height);
-
     onViewport(width, height);
 }
 
@@ -34,6 +33,7 @@ void window() {
     NOTICE("Initializing GLFW");
     NOTICE("GLFW version: %s", glfwGetVersionString());
     NOTICE("Compiled against GLFW version %d.%d.%d", GLFW_VERSION_MAJOR, GLFW_VERSION_MINOR, GLFW_VERSION_REVISION);
+    // TODO: Warn if mismatch!
 
     glfwSetErrorCallback(onGLFWError);
 
@@ -114,28 +114,24 @@ void window() {
         WARN("No OpenGL debug mechanisms are supported. Error messages will not be reported.");
     }
 
-    // Register callbacks
+    INFO("Initializing application");
+    setupRenderer();
+    setupInput(window);
+    glfwSwapInterval(opts->swapInterval);
     glfwSetFramebufferSizeCallback(window, onGLFWFramebufferSize);
 
-    // Input
-    setupInput(window);
+    // Viewport callback is not called for initial size
+    int width, height;
+    glfwGetWindowSize(window, &width, &height);
+    onViewport(width, height);
 
-    // Load scene
-    INFO("Initializing renderer");
-    setupRenderer();
-    onViewport(opts->outputWidth, opts->outputHeight);
-
-    // Timing
-    glfwSwapInterval(opts->swapInterval);
+    // Render first frame before showing the window
     glfwSetTime(0.0);
-
-    // Render first frame, display window late
     render(0.0);
-    glfwShowWindow(window);
     glfwSwapBuffers(window);
+    glfwShowWindow(window);
 
-    /* Main loop */
-    INFO("Entering main loop");
+    INFO("Initialized, now running main loop");
     double lastTime = 0.0;
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
@@ -151,7 +147,5 @@ void window() {
     }
 
     INFO("Terminating");
-
-    /* Terminate application */
     glfwDestroyWindow(window);
 }
